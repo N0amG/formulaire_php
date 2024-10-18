@@ -54,9 +54,6 @@ function switchTheme() {
     }
 }
 
-// Ajout de l'écouteur d'événements pour le bouton de changement de thème
-document.getElementById('theme-switcher').addEventListener('click', switchTheme);
-
 if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     // Application du thème sombre si le navigateur l'est.
     applyDarkTheme();
@@ -72,3 +69,7 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
         applyLightTheme();
     }
 });
+
+
+// Ajout de l'écouteur d'événements pour le bouton de changement de thème
+document.getElementById('theme-switcher').addEventListener('click', switchTheme);

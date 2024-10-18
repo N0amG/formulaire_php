@@ -1,12 +1,19 @@
+
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['numPartners'])) {
+    $numPartners = (int)$_POST['numPartners'];
+
     // Récupérer les données des partenaires
-    $partnerNames = $_POST['partnerName'];
-    $partnerContributions = $_POST['partnerContribution'];
+    $partnerNames = [];
+    $partnerContributions = [];
+    for ($i = 1; $i <= $numPartners; $i++) {
+        $partnerNames[] = htmlspecialchars($_POST["partner$i"]);
+        $partnerContributions[] = htmlspecialchars($_POST["contribution$i"]);
+    }
 
     // Générer le contenu du contrat
     $contractContent = "<h1>Contrat de Partenariat Commercial</h1>";
-    $contractContent .= "<p>Ce contrat est fait ce jour <strong>__________</strong>, <strong>______________________</strong> en <strong>_____________________</strong> copies originales, entre</p>";
+    $contractContent .= "<p>Ce contrat est fait ce jour <strong>".date("d/m/Y")."</strong>, en <strong>_________\$nb__________</strong> copies originales, entre</p>";
     $contractContent .= "<ol>";
 
     foreach ($partnerNames as $name) {
@@ -40,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Affichage du contrat
     echo "<html lang='fr'><head><meta charset='UTF-8'><link rel='stylesheet' href='styles.css'></head><body>$contractContent</body></html>";
+    echo '<script src="script.js" defer></script>';
 } else {
     // Redirection vers le formulaire si la méthode n'est pas POST
     header('Location: index.php');
