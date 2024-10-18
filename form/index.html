@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sélection du Nombre de Partenaires</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <h1>Formulaire de Partenariat Commercial</h1>
+    <div id="theme-switcher-container">
+      <button id="theme-switcher">Mode Sombre</button>
+    </div>
+    <!-- Formulaire pour sélectionner le nombre de partenaires -->
+    <form action="generate_form.php" method="post">
+      <fieldset class="form-section">
+        <legend>Sélection du Nombre de Partenaires</legend>
+        <label for="numPartners">Combien de partenaires ?</label>
+        <input
+          type="number"
+          id="numPartners"
+          name="numPartners"
+          min="1"
+          max="10"
+          required
+        />
+        <input type="submit" value="Valider" />
+      </fieldset>
+    </form>
+  </body>
+</html>
