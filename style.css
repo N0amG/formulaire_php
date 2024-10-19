@@ -5,7 +5,7 @@ body {
 }
 
 form {
-  max-width: 800px;
+  max-width: 80%;
   margin: auto;
   border: 1px solid #ccc;
   padding: 20px;
@@ -52,11 +52,17 @@ input[type="submit"]:hover {
 }
 
 .dark-theme {
-  background-color: #333;
+  background-color: #ba0c0c;
   color : #fff;
 }
 
 #theme-switcher-container {
   margin-bottom: 10px;
   text-align: right;
+}
+
+.delete-partner-container {
+  text-align: right;
+  color: red;
+  background-color: red;
 }
