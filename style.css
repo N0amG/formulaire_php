@@ -32,7 +32,7 @@ textarea {
   border-radius: 5px;
 }
 
-input[type="submit"] {
+input[type="submit"], button#add-partner-button {
   background-color: #4caf50;
   color: white;
   padding: 10px 20px;
@@ -42,8 +42,8 @@ input[type="submit"] {
   transition: background-color 0.3s ease;
 }
 
-input[type="submit"]:hover {
-  background-color: #45a049;
+input[type="submit"]:hover, button:hover {
+  background-color: #346036;
 }
 
 .light-theme {
@@ -52,7 +52,7 @@ input[type="submit"]:hover {
 }
 
 .dark-theme {
-  background-color: #ba0c0c;
+  background-color: #333;
   color : #fff;
 }
 
@@ -61,8 +61,42 @@ input[type="submit"]:hover {
   text-align: right;
 }
 
+#theme-switcher-container > button {
+  padding: 5px 10px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#theme-switcher-container > button:hover {
+  background-color: #666;
+}
 .delete-partner-container {
   text-align: right;
-  color: red;
-  background-color: red;
+}
+
+.delete-partner-container button {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-partner-container button:hover {
+  background-color: #962020;
+}
+
+#bottom-page-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
 }

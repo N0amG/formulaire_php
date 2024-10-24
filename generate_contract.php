@@ -1,56 +1,50 @@
-
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['numPartners'])) {
-    $numPartners = (int)$_POST['numPartners'];
+    $numPartners = (int)$_POST['numPartners'];  // Nombre de partenaires
 
-    // Récupérer les données des partenaires
-    $partnerNames = [];
-    $partnerContributions = [];
+    echo "<!DOCTYPE html>";
+    echo "<html lang='fr'>";
+    echo "<head>";
+    echo "<meta charset='UTF-8'>";
+    echo "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
+    echo "<title>Contrat de Partenariat</title>";
+    echo "<link rel='stylesheet' href='style.css'/>";
+    echo "</head>";
+    echo "<body>";
+    
+    echo "<h1>Contrat de Partenariat Commercial</h1>";
+    echo "<p>Ce contrat est fait ce jour " . date("d/m/Y") . ", en " . $numPartners . " copies originales, entre :</p>";
+
+    // Boucle pour récupérer et afficher les noms et contributions des partenaires
     for ($i = 1; $i <= $numPartners; $i++) {
-        $partnerNames[] = htmlspecialchars($_POST["partner$i"]);
-        $partnerContributions[] = htmlspecialchars($_POST["contribution$i"]);
+        $partnerName = isset($_POST["partner$i"]) ? htmlspecialchars($_POST["partner$i"]) : "Nom non fourni";
+        $contribution = isset($_POST["contribution$i"]) ? htmlspecialchars($_POST["contribution$i"]) : "Contribution non fournie";
+
+        echo "<p>Partenaire $i: $partnerName</p>";
+        echo "<p>Contribution: $contribution</p>";
     }
 
-    // Générer le contenu du contrat
-    $contractContent = "<h1>Contrat de Partenariat Commercial</h1>";
-    $contractContent .= "<p>Ce contrat est fait ce jour <strong>".date("d/m/Y")."</strong>, en <strong>_________\$nb__________</strong> copies originales, entre</p>";
-    $contractContent .= "<ol>";
+    // Le reste des informations du contrat peut être statique ou généré ici
+    echo "<h2>1. Nom du Partenariat et Activité</h2>";
+    echo "<p><strong>Nature des activités</strong>: (à définir)</p>";
+    echo "<p><strong>Nom du Partenariat</strong>: (à définir)</p>";
+    echo "<p><strong>Adresse officielle</strong>: (à définir)</p>";
 
-    foreach ($partnerNames as $name) {
-        $contractContent .= "<li><strong>$name</strong></li>";
-    }
+    echo "<h2>2. Termes</h2>";
+    echo "<p>Le partenariat commence le (à définir) et continue jusqu'à la fin de cet accord.</p>";
 
-    $contractContent .= "</ol><p>(les “Partenaires”).</p>";
-    $contractContent .= "<div class='section-title'>3. CONTRIBUTION AU PARTENARIAT</div>";
-    $contractContent .= "<div>3.1 La contribution de chaque partenaire au capital listée ci-dessous se compose des éléments suivants :</div>";
-    $contractContent .= "<ol>";
+    echo "<h2>3. Répartition des bénéfices et des pertes</h2>";
+    echo "<p>(à définir)</p>";
 
-    foreach ($partnerContributions as $contribution) {
-        $contractContent .= "<li><strong>$contribution</strong></li>";
-    }
+    echo "<h2>4. Modalités bancaires</h2>";
+    echo "<p>Les chèques doivent être signés par (à définir) des partenaires.</p>";
 
-    $contractContent .= "</ol>";
-    $contractContent .= "<div>2.1 Le partenariat commence le <strong>______________________________</strong> et continue jusqu'à la fin de cet accord.</div>";
-    $contractContent .= "<div>4.1 Les Partenaires se partageront les profits et les pertes du partenariat commercial de la manière suivante :</div>";
-    $contractContent .= "<textarea>___________________________________________________________________________</textarea>";
-    $contractContent .= "<div>5.1 Aucune personne ne peut être ajoutée en tant que partenaire sans le consentement écrit de tous les partenaires.</div>";
-    $contractContent .= "<p>Solennellement affirmé à <strong>____________________</strong></p>";
-    $contractContent .= "<p>Daté de ce jour <strong>________________________</strong></p>";
-    $contractContent .= "<p>Signé, validé et livré en présence de:</p>";
-    $contractContent .= "<ol>";
-    $contractContent .= "<li><strong>___________________________________________</strong> (Nom du partenaire)</li>";
-    $contractContent .= "<li><strong>___________________________________________</strong> (Nom du partenaire)</li>";
-    $contractContent .= "<li><strong>___________________________________________</strong> (Nom du partenaire)</li>";
-    $contractContent .= "</ol>";
-    $contractContent .= "<p>Par moi:</p>";
-    $contractContent .= "<p>___________________________________________ (Nom de l'avocat)</p>";
+    echo "<h2>5. Juridiction</h2>";
+    echo "<p>Le présent contrat de partenariat commercial est régi par les lois de l'État de (à définir).</p>";
 
-    // Affichage du contrat
-    echo "<html lang='fr'><head><meta charset='UTF-8'><link rel='stylesheet' href='styles.css'></head><body>$contractContent</body></html>";
-    echo '<script src="script.js" defer></script>';
+    echo "</body>";
+    echo "</html>";
 } else {
-    // Redirection vers le formulaire si la méthode n'est pas POST
-    header('Location: index.php');
-    exit;
+    echo "<p>Erreur : données du formulaire manquantes.</p>";
 }
 ?>

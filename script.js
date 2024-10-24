@@ -1,4 +1,3 @@
-
 function applyDarkTheme() {
     document.body.classList.add('dark-theme');
     document.body.classList.remove('light-theme');
@@ -70,6 +69,62 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
     }
 });
 
+function update_partner_section_name() {
+    const partnerLabel = document.getElementsByClassName('partnerNum');
+    for (let i = 0; i < partnerLabel.length; i++) {
+        partnerLabel[i].textContent = "Partenaire " + (i+1) + ":";
+    };
+    
+    const hiddenInput = document.getElementById('numPartnersInput');
+    hiddenInput.value = partnerLabel.length;
+    console.log(hiddenInput.value);
+}
+
+function delete_section(element) {
+    const parent = element.closest('.partner-section');
+    if (document.getElementsByClassName('delete-partner-button').length > 1 ) {
+        parent.remove();
+        update_partner_section_name();
+    } else {
+        alert("Il doit au moins y avoir 1 partenaire.");
+    }
+}
+
+function add_partner_section() {
+    const partnerSection = document.getElementsByClassName('partner-section')[0];
+    const newPartnerSection = partnerSection.cloneNode(true);
+    const partnerNum = document.getElementsByClassName('partnerNum').length;
+
+    // Mettre à jour le texte du label
+    newPartnerSection.querySelector('.partnerNum').textContent = "Partenaire " + (partnerNum + 1) + ":";
+
+    // Réinitialiser les champs de texte
+    newPartnerSection.querySelector('input[type="text"]').value = "";
+    newPartnerSection.querySelector('textarea').value = "";
+
+    // Ajouter l'écouteur d'événements pour le bouton de suppression
+    newPartnerSection.querySelector('.delete-partner-button').addEventListener('click', function() {
+        delete_section(this);
+    });
+
+    // Ajouter la nouvelle section au DOM
+    partnerSection.parentNode.appendChild(newPartnerSection);
+
+    // Mettre à jour le nombre de partenaires
+    update_partner_section_name();
+}
+
+
 
 // Ajout de l'écouteur d'événements pour le bouton de changement de thème
 document.getElementById('theme-switcher').addEventListener('click', switchTheme);
+
+// Ajout de l'écouteur d'événements pour chaque bouton de suppression de partenaire
+const deleteButtons = document.getElementsByClassName('delete-partner-button');
+for (let i = 0; i < deleteButtons.length; i++) {
+    deleteButtons[i].addEventListener('click', function() {
+        delete_section(this);
+    });
+}
+
+document.getElementById('add-partner-button').addEventListener('click', add_partner_section);
