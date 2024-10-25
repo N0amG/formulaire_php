@@ -18,7 +18,7 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['numPartners'])) {
         $numPartners = (int)$_POST['numPartners'];  // Nombre de partenaires sélectionné
 
-        echo '<form id="form" action="generate_contract.php" method="post">';
+        echo '<form id="form" action="generate_unfinish_contract.php" method="post">';
         echo '<legend>Informations sur les Partenaires</legend>';
         echo '<br>';
         echo '<fieldset class="information-section">';

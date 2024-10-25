@@ -100,3 +100,7 @@ input[type="submit"]:hover, button:hover {
     font-size: 14px;
     margin-top: 5px;
 }
+#partnerCount {
+  width: 20px; /* Définir la largeur souhaitée */
+}
+

@@ -77,7 +77,6 @@ function update_partner_section_name() {
     
     const hiddenInput = document.getElementById('numPartnersInput');
     hiddenInput.value = partnerLabel.length;
-    console.log(hiddenInput.value);
 }
 
 function delete_section(element) {
@@ -93,14 +92,20 @@ function delete_section(element) {
 function add_partner_section() {
     const partnerSection = document.getElementsByClassName('partner-section')[0];
     const newPartnerSection = partnerSection.cloneNode(true);
-    const partnerNum = document.getElementsByClassName('partnerNum').length;
+    const partnerNum = document.getElementsByClassName('partner-section').length + 1;
 
     // Mettre à jour le texte du label
-    newPartnerSection.querySelector('.partnerNum').textContent = "Partenaire " + (partnerNum + 1) + ":";
+    newPartnerSection.querySelector('.partnerNum').textContent = "Partenaire " + partnerNum + ":";
 
     // Réinitialiser les champs de texte
     newPartnerSection.querySelector('input[type="text"]').value = "";
     newPartnerSection.querySelector('textarea').value = "";
+    // Mettre à jour l'ID et le nom des champs
+    newPartnerSection.id = 'partner' + partnerNum;
+    newPartnerSection.querySelector('input[type="text"]').id = 'partner' + partnerNum;
+    newPartnerSection.querySelector('input[type="text"]').name = 'partner' + partnerNum;
+    newPartnerSection.querySelector('textarea').id = 'contribution' + partnerNum;
+    newPartnerSection.querySelector('textarea').name = 'contribution' + partnerNum;
 
     // Ajouter l'écouteur d'événements pour le bouton de suppression
     newPartnerSection.querySelector('.delete-partner-button').addEventListener('click', function() {
@@ -113,8 +118,6 @@ function add_partner_section() {
     // Mettre à jour le nombre de partenaires
     update_partner_section_name();
 }
-
-
 
 // Ajout de l'écouteur d'événements pour le bouton de changement de thème
 document.getElementById('theme-switcher').addEventListener('click', switchTheme);
