@@ -9,9 +9,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['numPartners'])) {
     echo "<meta name='viewport' content='width=device-width, initial-scale=1.0'>";
     echo "<title>Contrat de Partenariat</title>";
     echo "<link rel='stylesheet' href='style.css'/>";
+    echo "<script src='script.js' defer></script>";
     echo "</head>";
     echo "<body>";
-    
+    echo '
+    <div id="theme-switcher-container">
+      <button type="button" id="theme-switcher">Mode Sombre</button>
+    </div>';
+    echo "<form method='POST' action='final_contract.php'>"; // Formulaire qui redirige vers final_contract.php
+
     echo "<h1>Contrat de Partenariat Commercial</h1>";
     echo "<p>Ce contrat est fait ce jour " . date("d/m/Y") . ", en " . $numPartners . " copies originales, entre :</p>";
 
@@ -20,11 +26,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['numPartners'])) {
         $partnerName = isset($_POST["partner$i"]) ? htmlspecialchars($_POST["partner$i"]) : "Nom non fourni";
         $contribution = isset($_POST["contribution$i"]) ? htmlspecialchars($_POST["contribution$i"]) : "Contribution non fournie";
 
+        // Affichage des noms et contributions
         echo "<p>Partenaire $i: $partnerName</p>";
         echo "<p>Contribution: $contribution</p>";
+
+        // Champs cachés pour transmettre les noms et contributions
+        echo "<input type='hidden' name='partner$i' value='$partnerName'>";
+        echo "<input type='hidden' name='contribution$i' value='$contribution'>";
     }
 
-    // Le reste des informations du contrat peut être statique ou généré ici
+    // Inclure le nombre de partenaires dans le formulaire
+    echo "<input type='hidden' name='numPartners' value='$numPartners'>";
+
+    // Le reste des informations du contrat
     echo "<h2>1. Nom du Partenariat et Activité</h2>";
     echo "<p><strong>Nature des activités</strong>: </p>
     <textarea id='activityType' name='activityType' rows='5' required style='resize: none;'></textarea>";
@@ -55,9 +69,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['numPartners'])) {
      "<option value='IN'>Inde</option>" .
      "<option value='BR'>Brésil</option>" .
      "<option value='AU'>Australie</option>" .
-     // Ajoutez d'autres pays aux besoins
      "</select>" .
      ".</p>";
+
+    // Bouton de soumission
+    echo "<button type='submit' id='submitFinalForm'>Valider le Contrat</button>";
+    echo "</form>";
 
     echo "</body>";
     echo "</html>";
