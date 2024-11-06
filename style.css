@@ -1,0 +1,138 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background-color: #f9f9f9;
+}
+
+form {
+  max-width: 80%;
+  margin: auto;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+label {
+  font-weight: bold;
+}
+
+.form-section {
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="number"],
+textarea {
+  width: 95%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="submit"], button#add-partner-button, button#submitFinalForm {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+input[type="submit"]:hover, button:hover {
+  background-color: #346036;
+}
+
+.light-theme {
+  background-color: #fff;
+  color : #333;
+}
+
+.dark-theme {
+  background-color: #333;
+  color : #fff;
+}
+
+#theme-switcher-container {
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+#theme-switcher-container > button {
+  padding: 5px 10px;
+  border: solid 1px #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#theme-switcher-container > button:hover {
+  background-color: #666;
+}
+.delete-partner-container {
+  text-align: right;
+}
+
+.delete-partner-container button {
+  background-color: #f44336;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-partner-container button:hover {
+  background-color: #962020;
+}
+
+#bottom-page-container {
+  display: flex;
+  justify-content: space-around;
+}
+
+.error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
+#partnerCount {
+  width: 20px; /* Définir la largeur souhaitée */
+}
+
+#final-contract-container {
+  width: 210mm; /* Largeur d'une page A4 */
+  min-height: 297mm; /* Hauteur d'une page A4 */
+  margin: 20mm auto; /* Centrer la page avec des marges */
+  padding: 20mm; /* Espacement interne */
+  border: 1px solid #ccc; /* Bordure grise */
+  border-radius: 5px; /* Coins arrondis */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  background-color: white; /* Fond blanc */
+  font-family: 'Arial', sans-serif; /* Police de caractères */
+  color: #333; /* Couleur du texte */
+}
+
+body.dark-theme #final-contract-container {
+  background-color: #333; /* Fond sombre */
+  color: #fff; /* Couleur du texte clair */
+  border: 1px solid #555; /* Bordure grise foncée */
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1); /* Ombre légère */
+}
+
+#final-contract-container h1, 
+#final-contract-container h2, 
+#final-contract-container h3 {
+  text-align: center; /* Centrer les titres */
+  margin-top: 0; /* Pas de marge en haut */
+}
+
+#final-contract-container p {
+  text-align: justify; /* Justifier le texte */
+  line-height: 1.6; /* Hauteur de ligne */
+  margin: 10px 0; /* Marge verticale */
+}
