@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <button type="button" id="theme-switcher">Mode Sombre</button>
     </div>';
     // Affichage des noms et contributions des partenaires
-    $numPartners = isset($_POST['numPartners']) ? (int)$_POST['numPartners'] : 0;
+    $numPartners = isset($_POST['numPartners']) ? (int) $_POST['numPartners'] : 0;
     echo "<div id='final-contract-container'>";
     echo "<h1>Contrat de Partenariat Commercial</h1>";
     echo "<p>Ce contrat est fait ce jour " . date("d/m/Y") . ", en $numPartners copies originales, entre :</p>";
@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "<p><strong>Nature des activités:</strong> " . htmlspecialchars($_POST['activityType']) . "</p>";
     echo "<p><strong>Nom du Partenariat:</strong> " . htmlspecialchars($_POST['partnershipName']) . "</p>";
     echo "<p><strong>Adresse officielle:</strong> " . htmlspecialchars($_POST['officialAdress']) . "</p>";
-    
+
     echo "<h2>2. Termes</h2>";
     echo "<p>Le partenariat commence le " . htmlspecialchars($_POST['date']) . " et continue jusqu'à la fin de cet accord.</p>";
 
@@ -67,5 +67,69 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "</html>";
 } else {
     echo "<p>Erreur : données du formulaire manquantes.</p>";
+}
+
+$host = 'localhost';        // Hôte (souvent localhost)
+$dbname = 'formulaire_db';  // Nom de la base de données
+$username = 'root';  // Nom d'utilisateur
+$password = '';   // Mot de passe
+
+// Connexion PDO
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+    // Activer le mode d'erreur de PDO
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+    // Récupérer les données du formulaire
+    $date_creation = date('Y-m-d');
+    $num_partners = $_POST['numPartners'];
+    $activity_type = $_POST['activityType'];
+    $partnership_name = $_POST['partnershipName'];
+    $official_address = $_POST['officialAdress'];
+    $start_date = $_POST['date'];
+    $profit_loss_distribution = $_POST['distributionOfProfitsAndLosses'];
+    $signing_partner_count = $_POST['partnerCount'];
+    $country_code = $_POST['country'];
+    $country_name = isset($countries[$country_code]) ? $countries[$country_code] : 'Pays inconnu';
+
+    // Vérifier si le partenariat existe déjà
+    $queryCheck = "SELECT COUNT(*) FROM formulaire WHERE partnership_name = :partnership_name";
+    $stmtCheck = $pdo->prepare($queryCheck);
+    $stmtCheck->execute([':partnership_name' => $partnership_name]);
+    $count = $stmtCheck->fetchColumn();
+
+    if ($count > 0) {
+        echo ""; // Le partenariat existe déjà ne rien faire
+    } else {
+        // Préparer la requête SQL pour insérer les données
+        $query = "INSERT INTO formulaire 
+                  (date_creation, num_partners, activity_type, partnership_name, 
+                   official_address, start_date, profit_loss_distribution, signing_partner_count, 
+                   country_code, country_name) 
+                  VALUES (:date_creation, :num_partners, :activity_type, :partnership_name, 
+                          :official_address, :start_date, :profit_loss_distribution, 
+                          :signing_partner_count, :country_code, :country_name)";
+
+        // Préparer et exécuter la requête
+        $stmt = $pdo->prepare($query);
+        $stmt->execute([
+            ':date_creation' => $date_creation,
+            ':num_partners' => $num_partners,
+            ':activity_type' => $activity_type,
+            ':partnership_name' => $partnership_name,
+            ':official_address' => $official_address,
+            ':start_date' => $start_date,
+            ':profit_loss_distribution' => $profit_loss_distribution,
+            ':signing_partner_count' => $signing_partner_count,
+            ':country_code' => $country_code,
+            ':country_name' => $country_name
+        ]);
+
+        // Les données ont été insérées avec succès
+    }
+
+} catch (PDOException $e) {
+    echo "Erreur de connexion : " . $e->getMessage();
 }
 ?>
