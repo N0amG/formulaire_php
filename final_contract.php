@@ -111,6 +111,7 @@ try {
                           :official_address, :start_date, :profit_loss_distribution, 
                           :signing_partner_count, :country_code, :country_name)";
 
+
         // Préparer et exécuter la requête
         $stmt = $pdo->prepare($query);
         $stmt->execute([
@@ -126,9 +127,32 @@ try {
             ':country_name' => $country_name
         ]);
 
+        $idForm = $pdo->lastInsertId();
+        $queryPartenaire = "INSERT INTO partenaire (nom) VALUES (:nom)";
+        $queryFormulairePartenaire = "INSERT INTO partenaire_formulaire (id_formulaire, id_partenaire, contribution) 
+        VALUES (:id_formulaire, :id_partenaire, :contribution)";
+        
+        $stmtPartenaire = $pdo->prepare($queryPartenaire);
+        $stmtPartenaireFormulaire = $pdo->prepare($queryPartenaireFormulaire);
+        
+        for ($i = 1; $i <= $numPartners; $i++) {
+            $partnerName = $_POST["partner$i"];
+            $contribution = $_POST["contribution$i"]; // Assurez-vous que les contributions sont également envoyées via le formulaire
+        
+            // Insérer le partenaire
+            $stmtPartenaire->execute([':nom' => $partnerName]);
+            $idPartenaire = $pdo->lastInsertId();
+        
+            // Insérer la relation formulaire-partenaire
+            $stmtFormulairePartenaire->execute([
+                ':id_formulaire' => $idForm,
+                ':id_partenaire' => $idPartenaire,
+                ':contribution' => $contribution
+            ]);
+        }
         // Les données ont été insérées avec succès
+        echo "<p>Les données ont été insérées avec succès.</p>";
     }
-
 } catch (PDOException $e) {
     echo "Erreur de connexion : " . $e->getMessage();
 }
