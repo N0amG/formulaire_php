@@ -1,0 +1,7 @@
+Supprimer toutes les occurence de chaques tables :
+
+SET FOREIGN_KEY_CHECKS = 0; 
+TRUNCATE TABLE formulaire; 
+TRUNCATE TABLE partenaire; 
+TRUNCATE TABLE partenaire_formulaire; 
+SET FOREIGN_KEY_CHECKS = 1;

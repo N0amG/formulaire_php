@@ -28,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div id="theme-switcher-container">
       <button type="button" id="theme-switcher">Mode Sombre</button>
     </div>';
+    
     // Affichage des noms et contributions des partenaires
     $numPartners = isset($_POST['numPartners']) ? (int) $_POST['numPartners'] : 0;
     echo "<div id='final-contract-container'>";
@@ -65,19 +66,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "</div>";
     echo "</body>";
     echo "</html>";
+
+
+    // Sauvegarde des données dans la base de données
+    include('functions.php');
+
+    // Connexion à la base de données
+    $pdo = connectDB();
+
+    // Récupération des données du formulaire
+    $data = getDBData();
+    $formData = $data['data'];
+    $partners = $data['partners'];
+    // Insertion des données dans la base de données
+    insertDataIntoForm($pdo, $formData, $partners);
 } else {
     echo "<p>Erreur : données du formulaire manquantes.</p>";
 }
-
-include('functions.php');
-
-// Connexion à la base de données
-$pdo = connectDB();
-
-// Récupération des données du formulaire
-$data = getDBData();
-
-// Insertion des données dans la base de données
-insertData($pdo, $data);
-
-?>
