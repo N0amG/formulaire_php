@@ -1,29 +1,26 @@
 <?php
-function connectDB()
-{
-    $host = 'localhost';
-    $dbname = 'formulaire_db';
-    $username = 'root';
-    $password = '';
+// functions.php
+
+function connectDB() {
+    $config = include('config.php');
+    $db = $config['db'];
 
     try {
-        $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+        $pdo = new PDO("mysql:host={$db['host']};dbname={$db['dbname']}", $db['username'], $db['password']);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $pdo;
     } catch (PDOException $e) {
         die("Erreur de connexion : " . $e->getMessage());
     }
 }
-function validateFormData($data)
-{
+
+function validateFormData($data) {
     // Validation des données (exemple basique)
     return !empty($data['activity_type']) && !empty($data['partnership_name']);
 }
 
 function getDBData(): array {
-    // Retourner un tableau avec tous les éléments du formulaire à mettre dans la base de données (sans faire la requête)
     $partners = [];
-    
     $numPartners = $_POST['numPartners'] ?? 0;
     for ($i = 1; $i <= $numPartners; $i++) {
         $partners[] = [
@@ -48,8 +45,7 @@ function getDBData(): array {
     return ['data' => $data, 'partners' => $partners];
 }
 
-function sqlquery($pdo, $query, $params = [])
-{
+function sqlquery($pdo, $query, $params = []) {
     $stmt = $pdo->prepare($query);
     $stmt->execute($params);
     return $stmt;
@@ -106,7 +102,7 @@ function insertDataIntoForm($pdo, $data, $partners) {
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) { // Code d'erreur pour violation de contrainte d'unicité
             // Gérer les doublons ici (par exemple, afficher un message ou ignorer l'erreur)
-            echo ""; //Erreur : Un enregistrement avec les mêmes données existe déjà.";
+            echo "Erreur : Un enregistrement avec les mêmes données existe déjà.";
         } else {
             // Gérer les autres erreurs
             echo "Erreur : " . $e->getMessage();
