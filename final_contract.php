@@ -69,91 +69,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo "<p>Erreur : données du formulaire manquantes.</p>";
 }
 
-$host = 'localhost';        // Hôte (souvent localhost)
-$dbname = 'formulaire_db';  // Nom de la base de données
-$username = 'root';  // Nom d'utilisateur
-$password = '';   // Mot de passe
+include('functions.php');
 
-// Connexion PDO
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    // Activer le mode d'erreur de PDO
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+// Connexion à la base de données
+$pdo = connectDB();
 
+// Récupération des données du formulaire
+$data = getDBData();
 
-    // Récupérer les données du formulaire
-    $date_creation = date('Y-m-d');
-    $num_partners = $_POST['numPartners'];
-    $activity_type = $_POST['activityType'];
-    $partnership_name = $_POST['partnershipName'];
-    $official_address = $_POST['officialAdress'];
-    $start_date = $_POST['date'];
-    $profit_loss_distribution = $_POST['distributionOfProfitsAndLosses'];
-    $signing_partner_count = $_POST['partnerCount'];
-    $country_code = $_POST['country'];
-    $country_name = isset($countries[$country_code]) ? $countries[$country_code] : 'Pays inconnu';
+// Insertion des données dans la base de données
+insertData($pdo, $data);
 
-    // Vérifier si le partenariat existe déjà
-    $queryCheck = "SELECT COUNT(*) FROM formulaire WHERE partnership_name = :partnership_name";
-    $stmtCheck = $pdo->prepare($queryCheck);
-    $stmtCheck->execute([':partnership_name' => $partnership_name]);
-    $count = $stmtCheck->fetchColumn();
-
-    if ($count > 0) {
-        echo ""; // Le partenariat existe déjà ne rien faire
-    } else {
-        // Préparer la requête SQL pour insérer les données
-        $query = "INSERT INTO formulaire 
-                  (date_creation, num_partners, activity_type, partnership_name, 
-                   official_address, start_date, profit_loss_distribution, signing_partner_count, 
-                   country_code, country_name) 
-                  VALUES (:date_creation, :num_partners, :activity_type, :partnership_name, 
-                          :official_address, :start_date, :profit_loss_distribution, 
-                          :signing_partner_count, :country_code, :country_name)";
-
-
-        // Préparer et exécuter la requête
-        $stmt = $pdo->prepare($query);
-        $stmt->execute([
-            ':date_creation' => $date_creation,
-            ':num_partners' => $num_partners,
-            ':activity_type' => $activity_type,
-            ':partnership_name' => $partnership_name,
-            ':official_address' => $official_address,
-            ':start_date' => $start_date,
-            ':profit_loss_distribution' => $profit_loss_distribution,
-            ':signing_partner_count' => $signing_partner_count,
-            ':country_code' => $country_code,
-            ':country_name' => $country_name
-        ]);
-
-        $idForm = $pdo->lastInsertId();
-        $queryPartenaire = "INSERT INTO partenaire (nom) VALUES (:nom)";
-        $queryFormulairePartenaire = "INSERT INTO partenaire_formulaire (id_formulaire, id_partenaire, contribution) 
-        VALUES (:id_formulaire, :id_partenaire, :contribution)";
-        
-        $stmtPartenaire = $pdo->prepare($queryPartenaire);
-        $stmtPartenaireFormulaire = $pdo->prepare($queryPartenaireFormulaire);
-        
-        for ($i = 1; $i <= $numPartners; $i++) {
-            $partnerName = $_POST["partner$i"];
-            $contribution = $_POST["contribution$i"]; // Assurez-vous que les contributions sont également envoyées via le formulaire
-        
-            // Insérer le partenaire
-            $stmtPartenaire->execute([':nom' => $partnerName]);
-            $idPartenaire = $pdo->lastInsertId();
-        
-            // Insérer la relation formulaire-partenaire
-            $stmtFormulairePartenaire->execute([
-                ':id_formulaire' => $idForm,
-                ':id_partenaire' => $idPartenaire,
-                ':contribution' => $contribution
-            ]);
-        }
-        // Les données ont été insérées avec succès
-        echo "<p>Les données ont été insérées avec succès.</p>";
-    }
-} catch (PDOException $e) {
-    echo "Erreur de connexion : " . $e->getMessage();
-}
 ?>
