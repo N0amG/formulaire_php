@@ -8,7 +8,7 @@ Supprimer toutes les occurence de chaques tables :
 
 faire un ensemble de valeurs crédible : 
 
-        SET FOREIGN_KEY_CHECKS = 0;
+    SET FOREIGN_KEY_CHECKS = 0;
     
     TRUNCATE TABLE formulaire;
     TRUNCATE TABLE partenaire;

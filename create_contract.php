@@ -127,4 +127,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['numPartners'])) {
 include('html_utils/footer.php');
 ?>
 
-<script src="script.js" defer></script>
+<script src="scripts/create_form.js" defer></script>

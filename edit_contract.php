@@ -47,21 +47,31 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
 
 <form method="POST" action="">
     <input type="hidden" name="id" value="<?php echo $formId; ?>">
+    <input type="hidden" name="numPartners" value="<?php echo count($formData['partners']); ?>">
 
-    <h2>Partenaires et Contributions</h2>
-    <?php if (isset($formData['partners']) && is_array($formData['partners'])): ?>
-        <?php foreach ($formData['partners'] as $index => $partner): ?>
-            <p><strong>Partenaire <?php echo $index + 1; ?>:</strong> <?php echo htmlspecialchars($partner['nom']); ?></p>
-            <p><strong>Contribution:</strong> <?php echo htmlspecialchars($partner['contribution']); ?></p>
-            <input type="hidden" name="partner<?php echo $index + 1; ?>" value="<?php echo htmlspecialchars($partner['nom']); ?>">
-            <input type="hidden" name="contribution<?php echo $index + 1; ?>" value="<?php echo htmlspecialchars($partner['contribution']); ?>">
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>Aucun partenaire trouvé.</p>
-    <?php endif; ?>
-
-    <input type="hidden" name="numPartners" value="<?php echo isset($formData['partners']) ? count($formData['partners']) : 0; ?>">
-
+    <h2>Informations sur les Partenaires</h2>
+    <div>
+    <?php foreach ($formData['partners'] as $index => $partner): ?>
+        <div class="partner-section" id="partner-section-<?php echo $index + 1; ?>">
+            <label class="partnerNum" for="partner<?php echo $index + 1; ?>">Partenaire <?php echo $index + 1; ?>:</label>
+            <br>
+            <div class="delete-partner-container" id="delete-partner<?php echo $index + 1; ?>-div">
+                <button type="button" class="delete-partner-button">X</button>
+            </div>
+            <label for="partner<?php echo $index + 1; ?>">Nom du Partenaire</label>
+            <input type="text" id="partner<?php echo $index + 1; ?>" name="partner<?php echo $index + 1; ?>" value="<?php echo htmlspecialchars($partner['nom']); ?>" required>
+            <label for="contribution<?php echo $index + 1; ?>">Contribution du Partenaire</label>
+            <textarea id="contribution<?php echo $index + 1; ?>" name="contribution<?php echo $index + 1; ?>" rows="3" required style="resize: none;"><?php echo htmlspecialchars($partner['contribution']); ?></textarea>
+            <br>
+            <br>
+        </div>
+    <?php endforeach; ?>
+    <input type="hidden" id="numPartnersInput" name="numPartners" value="<?php $numPartners ?>">
+    </div>
+    <div id="bottom-page-container">
+        <button type="button" id="add-partner-button">Ajouter un Partenaire</button>
+    
+    </div>
     <h2>1. Nom du Partenariat et Activité</h2>
     <p><strong>Nature des activités</strong>: </p>
     <textarea id="activityType" name="activityType" rows="5" required style="resize: none;"><?php echo htmlspecialchars($formData['data']['activity_type']); ?></textarea>
@@ -76,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
     <textarea id="distributionOfProfitsAndLosses" name="distributionOfProfitsAndLosses" rows="5" required style="resize: none;"><?php echo htmlspecialchars($formData['data']['profit_loss_distribution']); ?></textarea>
 
     <h2>4. Modalités bancaires</h2>
-    <p>Les chèques doivent être signés par <input type="number" id="partnerCount" name="partnerCount" min="1" max="<?php echo isset($formData['partners']) ? count($formData['partners']) : 1; ?>" value="<?php echo htmlspecialchars($formData['data']['signing_partner_count']); ?>"> des partenaires.</p>
+    <p>Les chèques doivent être signés par <input type="number" id="partnerCount" name="partnerCount" min="1" max="<?php echo count($formData['partners']); ?>" value="<?php echo htmlspecialchars($formData['data']['signing_partner_count']); ?>"> des partenaires.</p>
 
     <h2>5. Juridiction</h2>
     <p>Le présent contrat de partenariat commercial est régi par les lois de l'État de 
@@ -99,3 +109,5 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
 </form>
 
 <?php include('html_utils/footer.php'); ?>
+
+<script src="scripts/create_form.js" defer></script>
