@@ -47,13 +47,13 @@ input[type="submit"]:hover, button:hover {
 }
 
 .light-theme {
-  background-color: #fff;
+  background-color: #f0f0f0;
   color : #333;
 }
 
 .dark-theme {
   background-color: #333;
-  color : #fff;
+  color : #f0f0f0;
 }
 
 #theme-switcher-container {
@@ -135,4 +135,58 @@ body.dark-theme #final-contract-container {
   text-align: justify; /* Justifier le texte */
   line-height: 1.6; /* Hauteur de ligne */
   margin: 10px 0; /* Marge verticale */
+}
+.contract {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1px 10px 1px 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+}
+
+.contract-info {
+    flex-grow: 1;
+}
+
+.contract-actions {
+    display: flex;
+    align-items: center;
+}
+
+.edit-button, .delete-button .display-button {
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#new_contract_container {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.new-contract-button {
+    background-color: green;
+    color: white;
+    padding: 50px;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+#menu-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: right;
+
+}
+
+.menu-button {
+    background-color: blue;
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 5px;
 }
