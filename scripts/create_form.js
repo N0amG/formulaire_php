@@ -1,16 +1,16 @@
 function update_partner_section_name() {
-    const partnerLabel = document.getElementsByClassName('partnerNum');
-    for (let i = 0; i < partnerLabel.length; i++) {
-        partnerLabel[i].textContent = "Partenaire " + (i+1) + ":";
-    };
-    
+    const partnerSections = document.querySelectorAll('.partner-section');
+    partnerSections.forEach((partnerSection, index) => {
+        partnerSection.querySelector('.partnerNum').textContent = "Partenaire " + (index + 1) + ":";
+    });
+
     const hiddenInput = document.getElementById('numPartnersInput');
-    hiddenInput.value = partnerLabel.length;
+    hiddenInput.value = partnerSections.length;
 }
 
 function delete_section(element) {
     const parent = element.closest('.partner-section');
-    if (document.getElementsByClassName('delete-partner-button').length > 1 ) {
+    if (document.querySelectorAll('.partner-section').length > 1) {
         parent.remove();
         update_partner_section_name();
     } else {
@@ -35,13 +35,18 @@ function add_partner_section() {
     attach_delete_events();
 }
 
-// Ajout de l'écouteur d'événements pour chaque bouton de suppression de partenaire
-const deleteButtons = document.getElementsByClassName('delete-partner-button');
-for (let i = 0; i < deleteButtons.length; i++) {
-    deleteButtons[i].addEventListener('click', function() {
-        delete_section(this);
+function attach_delete_events() {
+    const deleteButtons = document.querySelectorAll('.delete-partner-button');
+    deleteButtons.forEach(button => {
+        button.removeEventListener('click', handleDeletePartner);
+        button.addEventListener('click', handleDeletePartner);
     });
 }
 
-document.getElementById('add-partner-button').addEventListener('click', add_partner_section);
+function handleDeletePartner(event) {
+    const button = event.currentTarget;
+    delete_section(button);
+}
 
+document.getElementById('add-partner-button').addEventListener('click', add_partner_section);
+attach_delete_events();

@@ -69,6 +69,7 @@ function insertDataIntoForm($pdo, $data, $partners)
     try {
         $pdo->beginTransaction();
 
+        // Insérer le formulaire dans la table 'formulaire'
         $query = "INSERT INTO formulaire 
           (date_creation, num_partners, activity_type, partnership_name, 
            official_address, start_date, end_date, profit_loss_distribution, signing_partner_count, 
@@ -79,39 +80,32 @@ function insertDataIntoForm($pdo, $data, $partners)
         sqlquery($pdo, $query, $data);
         $idForm = $pdo->lastInsertId();
 
-        $queryPartenaire = "INSERT INTO partenaire (nom) VALUES (:nom)";
-        $queryPartenaireFormulaire = "INSERT INTO partenaire_formulaire (formulaire_id, partenaire_id, contribution) 
-                                      VALUES (:formulaire_id, :partenaire_id, :contribution)";
-
+        $submittedPartnerIds = [];
         foreach ($partners as $partner) {
-            $partnerName = $partner['name'];
-            $contribution = $partner['contribution'];
-
-            // Insérer le partenaire
-            try {
-                sqlquery($pdo, $queryPartenaire, [':nom' => $partnerName]);
+            if (!empty($partner['id'])) {
+                // Partenaire existant, récupérer l'ID
+                $submittedPartnerIds[] = $partner['id'];
+                $idPartenaire = $partner['id'];
+            } else {
+                // Nouveau partenaire, insérer
+                $stmt = $pdo->prepare('INSERT INTO partenaire (nom) VALUES (:nom)');
+                $stmt->execute(['nom' => $partner['name']]);
                 $idPartenaire = $pdo->lastInsertId();
-            } catch (PDOException $e) {
-                if ($e->getCode() == 23000) { // Code d'erreur pour violation de contrainte d'unicité
-                    // Récupérer l'ID du partenaire existant
-                    $stmt = sqlquery($pdo, "SELECT id FROM partenaire WHERE nom = :nom", [':nom' => $partnerName]);
-                    $idPartenaire = $stmt->fetchColumn();
-                } else {
-                    throw $e;
-                }
+                $submittedPartnerIds[] = $idPartenaire;
             }
 
             // Insérer la relation formulaire-partenaire avec contribution
-            sqlquery($pdo, $queryPartenaireFormulaire, [
-                ':formulaire_id' => $idForm,
-                ':partenaire_id' => $idPartenaire,
-                ':contribution' => $contribution
+            $stmt = $pdo->prepare('INSERT INTO partenaire_formulaire (formulaire_id, partenaire_id, contribution) VALUES (:formulaire_id, :partenaire_id, :contribution)');
+            $stmt->execute([
+                'formulaire_id' => $idForm,
+                'partenaire_id' => $idPartenaire,
+                'contribution' => $partner['contribution']
             ]);
         }
 
         $pdo->commit();
         return $idForm;
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
         $pdo->rollBack();
         echo "Erreur : " . $e->getMessage();
         return false;
