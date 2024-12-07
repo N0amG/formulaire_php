@@ -6,7 +6,7 @@ $pdo = connectDB();
 
 // Vérification de l'ID du formulaire dans l'URL
 if (isset($_GET['id'])) {
-    $formId = (int)$_GET['id'];
+    $formId = (int) $_GET['id'];
     // Récupération des informations du formulaire et des partenaires associés
     try {
         $formData = getFormDataById($pdo, $formId);

@@ -73,7 +73,8 @@ input[type="submit"]:hover, button:hover {
   background-color: #666;
 }
 .delete-partner-container {
-  text-align: right;
+  display: flex;
+  justify-content: right;
 }
 
 .delete-partner-container button {
@@ -176,7 +177,8 @@ body.dark-theme #final-contract-container {
     border-radius: 5px;
 }
 
-#menu-container {
+#menu-container,
+#edit-button-container {
     margin-top: 10px;
     display: flex;
     justify-content: right;

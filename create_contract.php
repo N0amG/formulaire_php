@@ -19,8 +19,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Sauvegarde des données dans la base de données
         $formId = insertDataIntoForm($pdo, $formData, $partners);
-        var_dump($formData);
-        var_dump($partners);
         if ($formId) {
             // Redirection vers display_contract.php avec l'ID du formulaire
             header("Location: display_contract.php?id=$formId");

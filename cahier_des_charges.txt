@@ -1,0 +1,4 @@
+pdf
+jquery
+style => bootstrap
+Autocomplétion quand on choisi un partenaire (librairie ?)
