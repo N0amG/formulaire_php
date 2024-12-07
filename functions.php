@@ -3,10 +3,13 @@
 
 function consoleLog($message)
 {
+    // Affiche un message dans la console du navigateur
     echo "<script>console.log('$message')</script>";
 }
+
 function connectDB()
 {
+    // Informations de connexion à la base de données
     $db = [
         'host' => 'localhost',
         'dbname' => 'formulaire_db',
@@ -15,11 +18,15 @@ function connectDB()
     ];
 
     try {
+        // Création d'une nouvelle connexion PDO
         $pdo = new PDO("mysql:host={$db['host']};dbname={$db['dbname']}", $db['username'], $db['password']);
+        // Configuration de l'attribut ERRMODE pour lancer des exceptions en cas d'erreur
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        // Affichage d'un message de succès dans la console du navigateur
         consoleLog("Connexion réussie");
         return $pdo;
     } catch (PDOException $e) {
+        // En cas d'erreur de connexion, affichage du message d'erreur et arrêt du script
         die("Erreur de connexion : " . $e->getMessage());
     }
 }
@@ -31,15 +38,16 @@ function getPOSTData(): array
     $partnerContributions = $_POST['contribution'] ?? [];
     $partnerIds = $_POST['partner_id'] ?? [];
 
-    foreach ($partnerNames as $index => $name) {
+    $numPartners = count($partnerNames);
+
+    for ($i = 0; $i < $numPartners; $i++) {
         $partners[] = [
-            'name' => $name,
-            'contribution' => $partnerContributions[$index] ?? '',
-            'id' => $partnerIds[$index] ?? null
+            'id' => !empty($partnerIds[$i]) ? $partnerIds[$i] : null,
+            'name' => $partnerNames[$i] ?? '',
+            'contribution' => $partnerContributions[$i] ?? ''
         ];
     }
 
-    $numPartners = count($partners);
     $data = [
         'date_creation' => date('Y-m-d H:i:s'),
         'num_partners' => $numPartners,
@@ -58,6 +66,7 @@ function getPOSTData(): array
 
 function sqlquery($pdo, $query, $params = [])
 {
+    // Prépare et exécute une requête SQL avec des paramètres
     $stmt = $pdo->prepare($query);
     $stmt->execute($params);
     return $stmt;
@@ -66,7 +75,18 @@ function sqlquery($pdo, $query, $params = [])
 function insertDataIntoForm($pdo, $data, $partners)
 {
     try {
+        // Démarrer une transaction
         $pdo->beginTransaction();
+
+        // Vérifier si le nom du partenariat existe déjà
+        $stmt = $pdo->prepare('SELECT id FROM formulaire WHERE partnership_name = :partnership_name');
+        $stmt->execute(['partnership_name' => $data['partnership_name']]);
+        $existingForm = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($existingForm) {
+            // Si le nom du partenariat existe déjà, lancer une exception
+            throw new Exception("Le nom du partenariat existe déjà. Veuillez choisir un autre nom.");
+        }
 
         // Insérer le formulaire dans la table 'formulaire'
         $query = "INSERT INTO formulaire 
@@ -80,6 +100,7 @@ function insertDataIntoForm($pdo, $data, $partners)
         $idForm = $pdo->lastInsertId();
 
         if (!$idForm) {
+            // Si l'insertion du formulaire échoue, lancer une exception
             throw new Exception("Erreur lors de l'insertion du formulaire.");
         }
 
@@ -108,9 +129,11 @@ function insertDataIntoForm($pdo, $data, $partners)
             ]);
         }
 
+        // Valider la transaction
         $pdo->commit();
         return $idForm;
     } catch (Exception $e) {
+        // Annuler la transaction en cas d'erreur
         $pdo->rollBack();
         echo "Erreur : " . $e->getMessage();
         return false;
@@ -196,11 +219,20 @@ function updateContract($pdo, $formId, $contractData, $partnersData)
                     'partenaire_id' => $partner['id']
                 ]);
             } else {
-                // Nouveau partenaire, insérer
-                // Insérer le partenaire dans la table 'partenaire'
-                $stmt = $pdo->prepare('INSERT INTO partenaire (nom) VALUES (:nom)');
+                // Vérifier si le partenaire existe déjà
+                $stmt = $pdo->prepare('SELECT id FROM partenaire WHERE nom = :nom');
                 $stmt->execute(['nom' => $partner['name']]);
-                $newPartnerId = $pdo->lastInsertId();
+                $existingPartner = $stmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($existingPartner) {
+                    // Le partenaire existe, utiliser son ID
+                    $newPartnerId = $existingPartner['id'];
+                } else {
+                    // Nouveau partenaire, insérer
+                    $stmt = $pdo->prepare('INSERT INTO partenaire (nom) VALUES (:nom)');
+                    $stmt->execute(['nom' => $partner['name']]);
+                    $newPartnerId = $pdo->lastInsertId();
+                }
 
                 // Lier le nouveau partenaire au formulaire
                 $stmt = $pdo->prepare('INSERT INTO partenaire_formulaire (formulaire_id, partenaire_id, contribution) VALUES (:formulaire_id, :partenaire_id, :contribution)');
