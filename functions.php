@@ -31,16 +31,15 @@ function getPOSTData(): array
     $partnerContributions = $_POST['contribution'] ?? [];
     $partnerIds = $_POST['partner_id'] ?? [];
 
-    $numPartners = count($partnerNames);
-
-    for ($i = 0; $i < $numPartners; $i++) {
+    foreach ($partnerNames as $index => $name) {
         $partners[] = [
-            'id' => !empty($partnerIds[$i]) ? $partnerIds[$i] : null,
-            'name' => $partnerNames[$i] ?? '',
-            'contribution' => $partnerContributions[$i] ?? ''
+            'name' => $name,
+            'contribution' => $partnerContributions[$index] ?? '',
+            'id' => $partnerIds[$index] ?? null
         ];
     }
 
+    $numPartners = count($partners);
     $data = [
         'date_creation' => date('Y-m-d H:i:s'),
         'num_partners' => $numPartners,
@@ -130,7 +129,8 @@ function pushToDatabase()
 
 }
 
-function getFormDataById($pdo, $formId) {
+function getFormDataById($pdo, $formId)
+{
     // Récupérer les informations du formulaire
     $queryForm = "SELECT * FROM formulaire WHERE id = :id";
     $formData = sqlquery($pdo, $queryForm, [':id' => $formId])->fetch(PDO::FETCH_ASSOC);
@@ -161,7 +161,8 @@ function getFormDataById($pdo, $formId) {
     return ['data' => $data, 'partners' => $partners];
 }
 
-function updateContract($pdo, $formId, $contractData, $partnersData) {
+function updateContract($pdo, $formId, $contractData, $partnersData)
+{
     try {
         $pdo->beginTransaction();
 
