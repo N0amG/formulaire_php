@@ -47,31 +47,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
 
 <form method="POST" action="">
     <input type="hidden" name="id" value="<?php echo $formId; ?>">
-    <input type="hidden" name="numPartners" value="<?php echo count($formData['partners']); ?>">
+    <input type="hidden" id="numPartnersInput" name="numPartners" value="<?php echo count($formData['partners']); ?>">
 
     <h2>Informations sur les Partenaires</h2>
-    <div>
-    <?php foreach ($formData['partners'] as $index => $partner): ?>
-        <div class="partner-section" id="partner-section-<?php echo $index + 1; ?>">
-            <label class="partnerNum" for="partner<?php echo $index + 1; ?>">Partenaire <?php echo $index + 1; ?>:</label>
-            <br>
-            <div class="delete-partner-container" id="delete-partner<?php echo $index + 1; ?>-div">
-                <button type="button" class="delete-partner-button">X</button>
+    <div id="partners-container">
+        <?php foreach ($formData['partners'] as $index => $partner): ?>
+            <div class="partner-section">
+                <!-- Champ caché pour l'ID du partenaire -->
+                <input type="hidden" name="partner_id[]" value="<?php echo htmlspecialchars($partner['id'] ?? ''); ?>">
+
+                <label class="partnerNum">Partenaire <?php echo $index + 1; ?>:</label>
+                <br>
+                <div class="delete-partner-container">
+                    <button type="button" class="delete-partner-button">X</button>
+                </div>
+                <label>Nom du Partenaire</label>
+                <input type="text" name="partner[]" value="<?php echo htmlspecialchars($partner['nom']); ?>" required>
+                <label>Contribution du Partenaire</label>
+                <textarea name="contribution[]" rows="3" required style="resize: none;"><?php echo htmlspecialchars($partner['contribution']); ?></textarea>
+                <br>
+                <br>
             </div>
-            <label for="partner<?php echo $index + 1; ?>">Nom du Partenaire</label>
-            <input type="text" id="partner<?php echo $index + 1; ?>" name="partner<?php echo $index + 1; ?>" value="<?php echo htmlspecialchars($partner['nom']); ?>" required>
-            <label for="contribution<?php echo $index + 1; ?>">Contribution du Partenaire</label>
-            <textarea id="contribution<?php echo $index + 1; ?>" name="contribution<?php echo $index + 1; ?>" rows="3" required style="resize: none;"><?php echo htmlspecialchars($partner['contribution']); ?></textarea>
-            <br>
-            <br>
-        </div>
-    <?php endforeach; ?>
-    <input type="hidden" id="numPartnersInput" name="numPartners" value="<?php $numPartners ?>">
+        <?php endforeach; ?>
     </div>
+
     <div id="bottom-page-container">
         <button type="button" id="add-partner-button">Ajouter un Partenaire</button>
-    
     </div>
+
     <h2>1. Nom du Partenariat et Activité</h2>
     <p><strong>Nature des activités</strong>: </p>
     <textarea id="activityType" name="activityType" rows="5" required style="resize: none;"><?php echo htmlspecialchars($formData['data']['activity_type']); ?></textarea>

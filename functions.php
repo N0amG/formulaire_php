@@ -1,34 +1,43 @@
 <?php
 // functions.php
 
+function consoleLog($message)
+{
+    echo "<script>console.log('$message')</script>";
+}
 function connectDB()
 {
-    $config = include('config.php');
-    $db = $config['db'];
+    $db = [
+        'host' => 'localhost',
+        'dbname' => 'formulaire_db',
+        'username' => 'root',
+        'password' => '',
+    ];
 
     try {
         $pdo = new PDO("mysql:host={$db['host']};dbname={$db['dbname']}", $db['username'], $db['password']);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        consoleLog("Connexion réussie");
         return $pdo;
     } catch (PDOException $e) {
         die("Erreur de connexion : " . $e->getMessage());
     }
 }
 
-function validateFormData($data)
-{
-    // Validation des données (exemple basique)
-    return !empty($data['activity_type']) && !empty($data['partnership_name']);
-}
-
 function getPOSTData(): array
 {
     $partners = [];
-    $numPartners = $_POST['numPartners'] ?? 0;
-    for ($i = 1; $i <= $numPartners; $i++) {
+    $partnerNames = $_POST['partner'] ?? [];
+    $partnerContributions = $_POST['contribution'] ?? [];
+    $partnerIds = $_POST['partner_id'] ?? [];
+
+    $numPartners = count($partnerNames);
+
+    for ($i = 0; $i < $numPartners; $i++) {
         $partners[] = [
-            'name' => $_POST["partner$i"] ?? '',
-            'contribution' => $_POST["contribution$i"] ?? 0
+            'id' => !empty($partnerIds[$i]) ? $partnerIds[$i] : null,
+            'name' => $partnerNames[$i] ?? '',
+            'contribution' => $partnerContributions[$i] ?? ''
         ];
     }
 
@@ -58,6 +67,8 @@ function sqlquery($pdo, $query, $params = [])
 function insertDataIntoForm($pdo, $data, $partners)
 {
     try {
+        $pdo->beginTransaction();
+
         $query = "INSERT INTO formulaire 
           (date_creation, num_partners, activity_type, partnership_name, 
            official_address, start_date, end_date, profit_loss_distribution, signing_partner_count, 
@@ -91,21 +102,17 @@ function insertDataIntoForm($pdo, $data, $partners)
             }
 
             // Insérer la relation formulaire-partenaire avec contribution
-            try {
-                sqlquery($pdo, $queryPartenaireFormulaire, [
-                    ':formulaire_id' => $idForm,
-                    ':partenaire_id' => $idPartenaire,
-                    ':contribution' => $contribution
-                ]);
-            } catch (PDOException $e) {
-                if ($e->getCode() != 23000) { // Ignorer les doublons dans la table de relation
-                    throw $e;
-                }
-            }
+            sqlquery($pdo, $queryPartenaireFormulaire, [
+                ':formulaire_id' => $idForm,
+                ':partenaire_id' => $idPartenaire,
+                ':contribution' => $contribution
+            ]);
         }
+
+        $pdo->commit();
         return $idForm;
     } catch (PDOException $e) {
-        // Gérer les erreurs
+        $pdo->rollBack();
         echo "Erreur : " . $e->getMessage();
         return false;
     }
@@ -116,29 +123,26 @@ function pushToDatabase()
 
     // Connexion à la base de données
     $pdo = connectDB();
-
     // Récupération des données du formulaire
     $data = getPOSTData();
     $formData = $data['data'];
     $partners = $data['partners'];
     // Insertion des données dans la base de données
-    insertDataIntoForm($pdo, $formData, $partners);
+    return insertDataIntoForm($pdo, $formData, $partners);
 
 }
 
-function getFormDataById($pdo, $formId): array
-{
+function getFormDataById($pdo, $formId) {
     // Récupérer les informations du formulaire
     $queryForm = "SELECT * FROM formulaire WHERE id = :id";
-    $stmtForm = sqlquery($pdo, $queryForm, [':id' => $formId]);
-    $formData = $stmtForm->fetch(PDO::FETCH_ASSOC);
+    $formData = sqlquery($pdo, $queryForm, [':id' => $formId])->fetch(PDO::FETCH_ASSOC);
 
     if (!$formData) {
         throw new Exception("Formulaire non trouvé pour l'ID $formId");
     }
 
     // Récupérer les partenaires associés au formulaire
-    $queryPartners = "SELECT p.nom, pf.contribution FROM partenaire p
+    $queryPartners = "SELECT p.id, p.nom, pf.contribution FROM partenaire p
                       JOIN partenaire_formulaire pf ON p.id = pf.partenaire_id
                       WHERE pf.formulaire_id = :formulaire_id";
     $partners = sqlquery($pdo, $queryPartners, [':formulaire_id' => $formId])->fetchAll(PDO::FETCH_ASSOC);
@@ -159,58 +163,70 @@ function getFormDataById($pdo, $formId): array
     return ['data' => $data, 'partners' => $partners];
 }
 
-function updateContract($pdo, $formId, $formData, $partners) {
+function updateContract($pdo, $formId, $contractData, $partnersData) {
     try {
-        // Début de la transaction
         $pdo->beginTransaction();
 
-        // Mise à jour des informations du formulaire
-        $queryUpdateForm = "UPDATE formulaire SET 
-            date_creation = :date_creation, 
-            num_partners = :num_partners, 
-            activity_type = :activity_type, 
-            partnership_name = :partnership_name, 
-            official_address = :official_address, 
-            start_date = :start_date, 
-            end_date = :end_date, 
-            profit_loss_distribution = :profit_loss_distribution, 
-            signing_partner_count = :signing_partner_count, 
-            country_code = :country_code 
-            WHERE id = :id";
-        $formData['id'] = $formId;
-        sqlquery($pdo, $queryUpdateForm, $formData);
+        // Mise à jour du formulaire
+        $stmt = $pdo->prepare('UPDATE formulaire SET date_creation = :date_creation, num_partners = :num_partners, activity_type = :activity_type, partnership_name = :partnership_name, official_address = :official_address, start_date = :start_date, end_date = :end_date, profit_loss_distribution = :profit_loss_distribution, signing_partner_count = :signing_partner_count, country_code = :country_code WHERE id = :id');
+        $contractData['id'] = $formId;
+        $stmt->execute($contractData);
 
-        // Suppression des relations existantes dans la table partenaire_formulaire
-        $queryDeleteRelations = "DELETE FROM partenaire_formulaire WHERE formulaire_id = :formulaire_id";
-        sqlquery($pdo, $queryDeleteRelations, [':formulaire_id' => $formId]);
+        // Obtenir la liste des partenaires actuels associés au contrat
+        $stmt = $pdo->prepare('SELECT partenaire_id FROM partenaire_formulaire WHERE formulaire_id = :formulaire_id');
+        $stmt->execute(['formulaire_id' => $formId]);
+        $currentPartnerIds = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
-        // Insertion des nouvelles relations dans la table partenaire_formulaire
-        $queryPartenaireFormulaire = "INSERT INTO partenaire_formulaire (formulaire_id, partenaire_id, contribution) 
-                                      VALUES (:formulaire_id, :partenaire_id, :contribution)";
-        foreach ($partners as $partner) {
-            $partnerName = $partner['name'];
-            $contribution = $partner['contribution'];
+        $submittedPartnerIds = [];
+        foreach ($partnersData as $partner) {
+            if (!empty($partner['id'])) {
+                // Partenaire existant, mettre à jour
+                $submittedPartnerIds[] = $partner['id'];
 
-            // Récupérer l'ID du partenaire existant ou insérer un nouveau partenaire
-            $stmt = sqlquery($pdo, "SELECT id FROM partenaire WHERE nom = :nom", [':nom' => $partnerName]);
-            $idPartenaire = $stmt->fetchColumn();
-            if (!$idPartenaire) {
-                sqlquery($pdo, "INSERT INTO partenaire (nom) VALUES (:nom)", [':nom' => $partnerName]);
-                $idPartenaire = $pdo->lastInsertId();
+                // Mettre à jour le nom du partenaire
+                $stmt = $pdo->prepare('UPDATE partenaire SET nom = :nom WHERE id = :id');
+                $stmt->execute(['nom' => $partner['name'], 'id' => $partner['id']]);
+
+                // Mettre à jour la contribution dans partenaire_formulaire
+                $stmt = $pdo->prepare('UPDATE partenaire_formulaire SET contribution = :contribution WHERE formulaire_id = :formulaire_id AND partenaire_id = :partenaire_id');
+                $stmt->execute([
+                    'contribution' => $partner['contribution'],
+                    'formulaire_id' => $formId,
+                    'partenaire_id' => $partner['id']
+                ]);
+            } else {
+                // Nouveau partenaire, insérer
+                // Insérer le partenaire dans la table 'partenaire'
+                $stmt = $pdo->prepare('INSERT INTO partenaire (nom) VALUES (:nom)');
+                $stmt->execute(['nom' => $partner['name']]);
+                $newPartnerId = $pdo->lastInsertId();
+
+                // Lier le nouveau partenaire au formulaire
+                $stmt = $pdo->prepare('INSERT INTO partenaire_formulaire (formulaire_id, partenaire_id, contribution) VALUES (:formulaire_id, :partenaire_id, :contribution)');
+                $stmt->execute([
+                    'formulaire_id' => $formId,
+                    'partenaire_id' => $newPartnerId,
+                    'contribution' => $partner['contribution']
+                ]);
+
+                $submittedPartnerIds[] = $newPartnerId;
             }
-
-            // Insérer la relation formulaire-partenaire avec contribution
-            sqlquery($pdo, $queryPartenaireFormulaire, [
-                ':formulaire_id' => $formId,
-                ':partenaire_id' => $idPartenaire,
-                ':contribution' => $contribution
-            ]);
         }
 
-        // Validation de la transaction
+        // Supprimer les partenaires qui ne sont plus dans le formulaire
+        $partnersToDelete = array_diff($currentPartnerIds, $submittedPartnerIds);
+        if (!empty($partnersToDelete)) {
+            // Supprimer les entrées de partenaire_formulaire
+            $stmt = $pdo->prepare('DELETE FROM partenaire_formulaire WHERE formulaire_id = :formulaire_id AND partenaire_id IN (' . implode(',', array_map('intval', $partnersToDelete)) . ')');
+            $stmt->execute(['formulaire_id' => $formId]);
+
+            // Supprimer les partenaires s'ils ne sont plus associés à d'autres formulaires
+            $stmt = $pdo->prepare('DELETE FROM partenaire WHERE id IN (' . implode(',', array_map('intval', $partnersToDelete)) . ') AND id NOT IN (SELECT partenaire_id FROM partenaire_formulaire)');
+            $stmt->execute();
+        }
+
         $pdo->commit();
     } catch (Exception $e) {
-        // Annulation de la transaction en cas d'erreur
         $pdo->rollBack();
         throw $e;
     }

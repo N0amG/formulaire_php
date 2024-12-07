@@ -19,33 +19,20 @@ function delete_section(element) {
 }
 
 function add_partner_section() {
-    const partnerSection = document.getElementsByClassName('partner-section')[0];
-    const newPartnerSection = partnerSection.cloneNode(true);
-    const partnerNum = document.getElementsByClassName('partner-section').length + 1;
+    const partnerSections = document.querySelectorAll('.partner-section');
+    const newPartnerSection = partnerSections[partnerSections.length - 1].cloneNode(true);
 
-    // Mettre à jour le texte du label
-    newPartnerSection.querySelector('.partnerNum').textContent = "Partenaire " + partnerNum + ":";
+    // Réinitialiser les champs
+    newPartnerSection.querySelector('input[name="partner_id[]"]').value = "";
+    newPartnerSection.querySelector('input[name="partner[]"]').value = "";
+    newPartnerSection.querySelector('textarea[name="contribution[]"]').value = "";
 
-    // Réinitialiser les champs de texte
-    newPartnerSection.querySelector('input[type="text"]').value = "";
-    newPartnerSection.querySelector('textarea').value = "";
-    // Mettre à jour l'ID et le nom des champs
-    newPartnerSection.id = 'partner' + partnerNum;
-    newPartnerSection.querySelector('input[type="text"]').id = 'partner' + partnerNum;
-    newPartnerSection.querySelector('input[type="text"]').name = 'partner' + partnerNum;
-    newPartnerSection.querySelector('textarea').id = 'contribution' + partnerNum;
-    newPartnerSection.querySelector('textarea').name = 'contribution' + partnerNum;
+    // Ajouter la nouvelle section
+    const partnersContainer = document.getElementById('partners-container');
+    partnersContainer.appendChild(newPartnerSection);
 
-    // Ajouter l'écouteur d'événements pour le bouton de suppression
-    newPartnerSection.querySelector('.delete-partner-button').addEventListener('click', function() {
-        delete_section(this);
-    });
-
-    // Ajouter la nouvelle section au DOM
-    partnerSection.parentNode.appendChild(newPartnerSection);
-
-    // Mettre à jour le nombre de partenaires
     update_partner_section_name();
+    attach_delete_events();
 }
 
 // Ajout de l'écouteur d'événements pour chaque bouton de suppression de partenaire
@@ -57,3 +44,4 @@ for (let i = 0; i < deleteButtons.length; i++) {
 }
 
 document.getElementById('add-partner-button').addEventListener('click', add_partner_section);
+

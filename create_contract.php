@@ -10,14 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['numPartners'])) {
     $numPartners = (int) $_POST['numPartners'];  // Nombre de partenaires
 
     if (isset($_POST['activityType'])) {
-        // Récupération des données du formulaire
-        $data = getPOSTData();
-        $formData = $data['data'];
-        $partners = $data['partners'];
+        consoleLog("test");
+        $formId = pushToDatabase();
 
-        // Sauvegarde des données dans la base de données
-        $pdo = connectDB();
-        $formId = insertDataIntoForm($pdo, $formData, $partners);
         // Redirection vers display_contract.php avec l'ID du formulaire
         header("Location: display_contract.php?id=$formId");
         exit;
