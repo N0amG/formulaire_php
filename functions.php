@@ -83,18 +83,20 @@ function insertDataIntoForm($pdo, $data, $partners)
             throw new Exception("Erreur lors de l'insertion du formulaire.");
         }
 
-        $submittedPartnerIds = [];
         foreach ($partners as $partner) {
-            if (!empty($partner['id'])) {
-                // Partenaire existant, récupérer l'ID
-                $submittedPartnerIds[] = $partner['id'];
-                $idPartenaire = $partner['id'];
+            // Vérifier si le partenaire existe déjà
+            $stmt = $pdo->prepare('SELECT id FROM partenaire WHERE nom = :nom');
+            $stmt->execute(['nom' => $partner['name']]);
+            $existingPartner = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($existingPartner) {
+                // Le partenaire existe, utiliser son ID
+                $idPartenaire = $existingPartner['id'];
             } else {
                 // Nouveau partenaire, insérer
                 $stmt = $pdo->prepare('INSERT INTO partenaire (nom) VALUES (:nom)');
                 $stmt->execute(['nom' => $partner['name']]);
                 $idPartenaire = $pdo->lastInsertId();
-                $submittedPartnerIds[] = $idPartenaire;
             }
 
             // Insérer la relation formulaire-partenaire avec contribution
