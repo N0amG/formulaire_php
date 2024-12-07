@@ -41,7 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         echo '<input type="hidden" id="numPartnersInput" name="numPartners" value="' . $numPartners . '">';
         echo '<div id="bottom-page-container">';
-        echo '<input type="submit" value="Soumettre">';
         echo '<button type="button" id="add-partner-button">Ajouter un Partenaire</button>';
         echo '</div>';
         echo '</form>';
@@ -67,8 +66,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     echo '</fieldset>';
     echo '</form>';
 }
-
-include('html_utils/footer.php');
 ?>
+
+<form method="POST" action="">
+    <h2>1. Nom du Partenariat et Activité</h2>
+    <p><strong>Nature des activités</strong>: </p>
+    <textarea id="activityType" name="activityType" rows="5" required style="resize: none;"></textarea>
+    <p><strong>Nom du Partenariat</strong>: </p>
+    <textarea id="partnershipName" name="partnershipName" rows="5" required style="resize: none;"></textarea>
+    <p><strong>Adresse officielle</strong>: </p>
+    <textarea id="officialAdress" name="officialAdress" rows="5" required style="resize: none;"></textarea>
+
+    <h2>2. Termes</h2>
+    <p>Le partenariat commence le <input type="date" id="date_debut" name="date"> et finira le <input type="date" id="date_fin" name="date_fin">.</p>
+    <br>
+    <h2>3. Répartition des bénéfices et des pertes</h2>
+    <textarea id="distributionOfProfitsAndLosses" name="distributionOfProfitsAndLosses" rows="5" required style="resize: none;"></textarea>
+
+    <h2>4. Modalités bancaires</h2>
+    <p>Les chèques doivent être signés par <input type="number" id="partnerCount" name="partnerCount" min="1" max="100" value="1"> des partenaires.</p>
+
+    <h2>5. Juridiction</h2>
+    <p>Le présent contrat de partenariat commercial est régi par les lois de l'État de 
+    <select id="countryOfContract" name="country" required>
+        <option value="">Sélectionnez un pays</option>
+        <option value="FR">France</option>
+        <option value="US">États-Unis</option>
+        <option value="CA">Canada</option>
+        <option value="GB">Royaume-Uni</option>
+        <option value="DE">Allemagne</option>
+        <option value="JP">Japon</option>
+        <option value="CN">Chine</option>
+        <option value="IN">Inde</option>
+        <option value="BR">Brésil</option>
+        <option value="AU">Australie</option>
+    </select>.
+    </p>
+
+    <button type="submit" id="submitFinalForm">Valider le Contrat</button>
+</form>
+
+<?php include('html_utils/footer.php'); ?>
 
 <script src="scripts/create_form.js" defer></script>

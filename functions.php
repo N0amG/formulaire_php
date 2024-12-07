@@ -66,6 +66,7 @@ function sqlquery($pdo, $query, $params = [])
 
 function insertDataIntoForm($pdo, $data, $partners)
 {
+    consoleLog("Insertion des données dans la base de données");
     try {
         $pdo->beginTransaction();
 
@@ -79,6 +80,10 @@ function insertDataIntoForm($pdo, $data, $partners)
                   :signing_partner_count, :country_code)";
         sqlquery($pdo, $query, $data);
         $idForm = $pdo->lastInsertId();
+
+        if (!$idForm) {
+            throw new Exception("Erreur lors de l'insertion du formulaire.");
+        }
 
         $submittedPartnerIds = [];
         foreach ($partners as $partner) {
