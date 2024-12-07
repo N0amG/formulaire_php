@@ -66,7 +66,6 @@ function sqlquery($pdo, $query, $params = [])
 
 function insertDataIntoForm($pdo, $data, $partners)
 {
-    consoleLog("Insertion des données dans la base de données");
     try {
         $pdo->beginTransaction();
 

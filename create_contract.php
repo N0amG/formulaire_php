@@ -52,10 +52,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Sauvegarde des données dans la base de données
         $formId = insertDataIntoForm($pdo, $formData, $partners);
-        // Redirection vers display_contract.php avec l'ID du formulaire
-        header("Location: display_contract.php?id=$formId");
-        exit;
-    }
+        if ($formId) {
+            // Redirection vers display_contract.php avec l'ID du formulaire
+            header("Location: display_contract.php?id=$formId");
+            exit;
+        } else {
+            echo "Erreur lors de l'insertion des données.";
+        }
+    }   
 } else {
     echo '<form action="" method="post">';
     echo '<fieldset class="form-section">';
