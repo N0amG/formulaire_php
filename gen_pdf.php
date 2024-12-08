@@ -54,9 +54,6 @@ if ($contractId > 0) {
         // Rendre le PDF
         $dompdf->render();
 
-        // Enregistrer le fichier PDF généré pour débogage
-        file_put_contents('debug_output.pdf', $dompdf->output());
-
         // Envoyer le PDF au navigateur avec les bons en-têtes
         header("Content-Type: application/pdf");
         header("Content-Disposition: inline; filename=monfichier.pdf");

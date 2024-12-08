@@ -44,6 +44,7 @@ foreach ($formData['partners'] as $index => $partner) {
 
     echo "<p><strong>Partenaire " . ($index + 1) . ":</strong> $partnerName</p>";
     echo "<p><strong>Contribution:</strong> $contribution</p>";
+    echo "<br>";
 }
 
 // Affichage du reste des informations de manière statique
