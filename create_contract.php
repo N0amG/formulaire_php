@@ -1,6 +1,6 @@
 <?php
-include('html_utils/header.php');
-include('functions.php');
+require_once('html_utils/header.php');
+require_once('functions.php');
 
 // Connexion à la base de données
 $pdo = connectDB();
@@ -120,4 +120,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <script src="scripts/create_form.js" defer></script>
 
-<?php include('html_utils/footer.php'); ?>
+<?php require_once('html_utils/footer.php'); ?>

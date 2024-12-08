@@ -1,5 +1,5 @@
 <?php
-include('functions.php');
+require_once('functions.php');
 
 // Connexion à la base de données
 $pdo = connectDB();
@@ -32,7 +32,7 @@ $countries = [
     'AU' => "d'Australie"
 ];
 
-include('html_utils/header.php');
+require_once('html_utils/header.php');
 
 echo "<div id='final-contract-container'>";
 echo "<h1>Contrat de Partenariat Commercial</h1>";
@@ -67,5 +67,5 @@ $countryName = isset($countries[$countryCode]) ? $countries[$countryCode] : "Pay
 echo "<p>Le présent contrat de partenariat commercial est régi par les lois de l'État $countryName.</p>";
 echo "</div>";
 
-include('html_utils/footer.php');
+require_once('html_utils/footer.php');
 ?>  

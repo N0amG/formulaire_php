@@ -1,5 +1,5 @@
 <?php
-include('functions.php');
+require_once('functions.php');
 
 // Connexion à la base de données
 $pdo = connectDB();
@@ -9,7 +9,7 @@ $query = "SELECT id, partnership_name, date_creation, num_partners FROM formulai
 $contracts = sqlquery($pdo, $query)->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<?php include('html_utils/header.php'); ?>
+<?php require_once('html_utils/header.php'); ?>
 
 <h1>Liste des Contrats</h1>
 <div>
@@ -40,4 +40,4 @@ $contracts = sqlquery($pdo, $query)->fetchAll(PDO::FETCH_ASSOC);
     <p>Aucun contrat trouvé.</p>
 <?php endif; ?>
 
-<?php include('html_utils/footer.php'); ?>
+<?php require_once('html_utils/footer.php'); ?>

@@ -22,25 +22,29 @@ $pdo = connectDB();
 $contractId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($contractId > 0) {
-    // Construire l'URL de la page à charger
-    $url = "http://localhost/formulaire/display_contract.php?id=" . $contractId;
+    // Capturer le contenu de display_contract.php
+    ob_start();
+    include('display_contract.php');
+    $htmlContent = ob_get_clean();
 
-    // Utiliser cURL pour récupérer le contenu HTML
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // Suivre les redirections si nécessaire
-    curl_setopt($ch, CURLOPT_TIMEOUT, 10); // Timeout après 10 secondes
-    $htmlContent = curl_exec($ch);
-    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    $curlError = curl_error($ch); // Récupère l'erreur si cURL échoue
-    curl_close($ch);
+    if ($htmlContent !== false) {
+        // Supprimer la balise <header> et son contenu
+        $dom = new DOMDocument();
+        libxml_use_internal_errors(true);
+        $dom->loadHTML($htmlContent);
+        libxml_clear_errors();
 
-    if ($httpCode == 200 && $htmlContent !== false) {
-        // Initialiser Dompdf avec des options
+        $xpath = new DOMXPath($dom);
+        $headerNodes = $xpath->query('//header');
+
+        foreach ($headerNodes as $headerNode) {
+            $headerNode->parentNode->removeChild($headerNode);
+        }
+
+        $htmlContent = $dom->saveHTML();
+
         $options = new Options();
-        $options->set('defaultFont', 'Arial'); // Définit une police par défaut
-        $options->set('isHtml5ParserEnabled', true); // Active le support HTML5
+        $options->set('defaultFont', 'Arial');
 
         $dompdf = new Dompdf($options);
 
@@ -65,10 +69,6 @@ if ($contractId > 0) {
     } else {
         // Gérer les erreurs lors de la récupération du contenu HTML
         echo "Erreur : Impossible de récupérer le contenu HTML.";
-        if ($curlError) {
-            echo "<br>Erreur cURL : " . htmlspecialchars($curlError);
-        }
-        echo "<br>Code HTTP : " . $httpCode;
     }
 } else {
     echo "Erreur : ID de contrat invalide.";

@@ -1,5 +1,5 @@
 <?php
-include('functions.php');
+require_once('functions.php');
 
 // Connexion à la base de données
 $pdo = connectDB();

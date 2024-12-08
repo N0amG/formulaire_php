@@ -8,6 +8,7 @@
     <script src="scripts/script.js" defer></script>
 </head>
 <body>
+    <header>
 <?php
 if (!defined('IN_GEN_PDF')) {
     echo '
@@ -33,3 +34,5 @@ if (!defined('IN_GEN_PDF')) {
     }
 }
 ?>
+    </header>
+    <main>
