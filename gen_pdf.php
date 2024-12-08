@@ -13,7 +13,7 @@ $contractId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($contractId > 0) {
     // Construire l'URL de la page à charger
-    $url = "http://localhost/formulaire/form/display_contract.php?id=" . $contractId;
+    $url = "http://localhost/formulaire/display_contract.php?id=" . $contractId;
     consoleLog($url);
     // Récupérer le contenu HTML de la page
     $htmlContent = file_get_contents($url);

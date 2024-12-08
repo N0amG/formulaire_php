@@ -9,7 +9,7 @@ function consoleLog($message)
 
 function connectDB()
 {
-    // Informations de connexion à la base de données
+    // Configuration des informations de connexion à la base de données
     $db = [
         'host' => 'localhost',
         'dbname' => 'formulaire_db',
