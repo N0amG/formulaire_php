@@ -56,7 +56,7 @@ if ($contractId > 0) {
 
         // Envoyer le PDF au navigateur avec les bons en-têtes
         header("Content-Type: application/pdf");
-        header("Content-Disposition: inline; filename=monfichier.pdf");
+        header("Content-Disposition: inline; filename=contract_num_$contractId.pdf");
 
         echo $dompdf->output();
         exit;
