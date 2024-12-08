@@ -30,5 +30,5 @@
         </div>';
     }
 ?>
-    </header>
-    <main>
+</header>
+<main>
