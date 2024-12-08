@@ -1,8 +1,5 @@
 <?php 
 
-// Définition de la constante pour empêcher l'accès direct à ce fichier
-define('IN_GEN_PDF', true);
-
 use Dompdf\Dompdf;
 use Dompdf\Options;
 

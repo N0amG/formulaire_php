@@ -9,16 +9,13 @@
 </head>
 <body>
     <header>
-<?php
-if (!defined('IN_GEN_PDF')) {
-    echo '
         <div id="theme-switcher-container">
             <button type="button" id="theme-switcher">Mode Sombre</button>
         </div>
         <div id="menu-container">
             <a href="index.php" class="menu-button">Menu</a>
-        </div>';
-    
+        </div>
+    <?php
     // Si on se trouve sur la page display_contract.php, rajouter le bouton d'édition
     if (basename($_SERVER['PHP_SELF']) == 'display_contract.php') {
         echo '
@@ -32,7 +29,6 @@ if (!defined('IN_GEN_PDF')) {
             <a href="gen_pdf.php?id=' . $formId . '" class="print-button">Imprimer</a>
         </div>';
     }
-}
 ?>
     </header>
     <main>
