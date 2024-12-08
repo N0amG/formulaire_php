@@ -1,71 +1,43 @@
-<?php
-include('functions.php');
+<?php 
 
-// Connexion à la base de données
+use Dompdf\Dompdf;
+use Dompdf\Options;
+
+require_once('functions.php');
+require_once('includes/dompdf/autoload.inc.php');
+
 $pdo = connectDB();
 
-// Vérification de l'ID du formulaire dans l'URL
-if (isset($_GET['id'])) {
-    $formId = (int) $_GET['id'];
-    // Récupération des informations du formulaire et des partenaires associés
-    try {
-        $formData = getFormDataById($pdo, $formId);
-    } catch (Exception $e) {
-        echo "<p>Erreur : " . $e->getMessage() . "</p>";
-        exit;
+// Récupérer l'ID du contrat depuis l'URL
+$contractId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+if ($contractId > 0) {
+    // Construire l'URL de la page à charger
+    $url = "http://localhost/formulaire/form/display_contract.php?id=" . $contractId;
+
+    // Récupérer le contenu HTML de la page
+    $htmlContent = file_get_contents($url);
+
+    if ($htmlContent !== false) {
+        $options = new Options();
+        $options->set('defaultFont', 'Arial');
+
+        $dompdf = new Dompdf($options);
+
+        // Charger le contenu HTML dans Dompdf
+        $dompdf->loadHtml($htmlContent);
+
+        // Définir la taille et l'orientation du papier
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Rendre le PDF
+        $dompdf->render();
+
+        // Envoyer le PDF au navigateur
+        $dompdf->stream('monfichier.pdf', ['Attachment' => 0]);
+    } else {
+        echo "Erreur : Impossible de récupérer le contenu HTML de la page.";
     }
 } else {
-    echo "<p>Erreur : ID du formulaire manquant.</p>";
-    exit;
+    echo "Erreur : ID de contrat invalide.";
 }
-
-$countries = [
-    'FR' => 'de France',
-    'US' => 'des États-Unis',
-    'CA' => 'de Canada',
-    'GB' => 'du Royaume-Uni',
-    'DE' => "d'Allemagne",
-    'JP' => 'du Japon',
-    'CN' => 'de Chine',
-    'IN' => "d'Inde",
-    'BR' => 'du Brésil',
-    'AU' => "d'Australie"
-];
-
-include('html_utils/header.php');
-
-echo "<div id='final-contract-container'>";
-echo "<h1>Contrat de Partenariat Commercial</h1>";
-echo "<p>Ce contrat est fait ce jour " . date("d/m/Y") . ", en " . htmlspecialchars($formData['data']['num_partners']) . " copies originales, entre :</p>";
-
-foreach ($formData['partners'] as $index => $partner) {
-    $partnerName = htmlspecialchars($partner['nom']);
-    $contribution = htmlspecialchars($partner['contribution']);
-
-    echo "<p><strong>Partenaire " . ($index + 1) . ":</strong> $partnerName</p>";
-    echo "<p><strong>Contribution:</strong> $contribution</p>";
-}
-
-// Affichage du reste des informations de manière statique
-echo "<h2>1. Nom du Partenariat et Activité</h2>";
-echo "<p><strong>Nature des activités:</strong> " . htmlspecialchars($formData['data']['activity_type']) . "</p>";
-echo "<p><strong>Nom du Partenariat:</strong> " . htmlspecialchars($formData['data']['partnership_name']) . "</p>";
-echo "<p><strong>Adresse officielle:</strong> " . htmlspecialchars($formData['data']['official_address']) . "</p>";
-
-echo "<h2>2. Termes</h2>";
-echo "<p>Le partenariat commence le " . htmlspecialchars($formData['data']['start_date']) . " et se termine le " . htmlspecialchars($formData['data']['end_date']) . ".</p>";
-
-echo "<h2>3. Répartition des bénéfices et des pertes</h2>";
-echo "<p>" . htmlspecialchars($formData['data']['profit_loss_distribution']) . "</p>";
-
-echo "<h2>4. Modalités bancaires</h2>";
-echo "<p>Les chèques doivent être signés par " . htmlspecialchars($formData['data']['signing_partner_count']) . " des partenaires.</p>";
-
-echo "<h2>5. Juridiction</h2>";
-$countryCode = htmlspecialchars($formData['data']['country_code']);
-$countryName = isset($countries[$countryCode]) ? $countries[$countryCode] : "Pays inconnu";
-echo "<p>Le présent contrat de partenariat commercial est régi par les lois de l'État $countryName.</p>";
-echo "</div>";
-
-include('html_utils/footer.php');
-?>

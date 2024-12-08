@@ -21,5 +21,10 @@
             <div id="edit-button-container">
                 <a href="edit_contract.php?id=' . $formId . '" class="edit-button">Édition</a>
             </div>';
+            //afficher un bouton pour imprimer le contrat qui redirige sur la page gen_pdf.php avec en parametre get l'id du contrat
+            echo '
+            <div id="print-button-container">
+                <a href="gen_pdf.php?id=' . $formId . '" class="print-button">Imprimer</a>
+            </div>';
         }
     ?>

@@ -178,7 +178,8 @@ body.dark-theme #final-contract-container {
 }
 
 #menu-container,
-#edit-button-container {
+#edit-button-container,
+#print-button-container {
     margin-top: 10px;
     display: flex;
     justify-content: right;
