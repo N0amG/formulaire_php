@@ -38,28 +38,36 @@ if ($contractId > 0) {
             $headerNode->parentNode->removeChild($headerNode);
         }
 
-        $htmlContent = $dom->saveHTML();
+        // Supposons que $dom est un objet DOMDocument contenant le HTML complet
+        $finalContractContainer = $dom->getElementById('final-contract-container');
 
-        $options = new Options();
-        $options->set('defaultFont', 'Arial');
+        if ($finalContractContainer) {
+            $htmlContent = $dom->saveHTML($finalContractContainer);
 
-        $dompdf = new Dompdf($options);
+            $options = new Options();
+            $options->set('defaultFont', 'Arial');
 
-        // Charger le contenu HTML dans Dompdf
-        $dompdf->loadHtml($htmlContent);
+            $dompdf = new Dompdf($options);
 
-        // Définir la taille et l'orientation du papier
-        $dompdf->setPaper('A4', 'portrait');
+            // Charger le contenu HTML dans Dompdf
+            $dompdf->loadHtml($htmlContent);
 
-        // Rendre le PDF
-        $dompdf->render();
+            // Définir la taille et l'orientation du papier
+            $dompdf->setPaper('A4', 'portrait');
 
-        // Envoyer le PDF au navigateur avec les bons en-têtes
-        header("Content-Type: application/pdf");
-        header("Content-Disposition: inline; filename=contract_num_$contractId.pdf");
+            // Rendre le PDF
+            $dompdf->render();
 
-        echo $dompdf->output();
-        exit;
+            // Envoyer le PDF au navigateur avec les bons en-têtes
+            header("Content-Type: application/pdf");
+            header("Content-Disposition: inline; filename=contract_num_$contractId.pdf");
+
+            echo $dompdf->output();
+            exit;
+        } else {
+            // Gérer les erreurs lors de la récupération du contenu HTML
+            echo "Erreur : Impossible de récupérer le contenu du conteneur final-contract.";
+        }
     } else {
         // Gérer les erreurs lors de la récupération du contenu HTML
         echo "Erreur : Impossible de récupérer le contenu HTML.";

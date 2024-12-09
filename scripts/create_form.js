@@ -29,7 +29,9 @@ function add_partner_section() {
     // Mettre à jour les numéros de partenaire et le champ caché
     update_partner_section_name();
     attach_delete_events();
+    applyAutocomplete();
 }
+
 function delete_section(element) {
     const parent = element.closest('.partner-section');
     const partnersContainer = document.getElementById('partners-container');
@@ -60,6 +62,46 @@ function confirmDelete() {
     return confirm("Êtes-vous sûr de vouloir supprimer ce formulaire ?");
 }
 
-// Ajouter les événements au chargement de la page
-document.getElementById('add-partner-button').addEventListener('click', add_partner_section);
-attach_delete_events();
+$(function() {
+    $("#date_debut").datepicker({
+        showAnim: "slideDown"
+    });
+    $("#date_fin").datepicker({
+        showAnim: "slideDown"
+    });
+});
+
+function applyAutocomplete() {
+    // Fonction pour récupérer les noms des partenaires depuis la base de données
+    function fetchPartnerNames(request, response) {
+        console.log("Fetching partner names for term:", request.term); // Message de débogage
+        $.ajax({
+            url: 'fetch_partner_names.php', // Assurez-vous que ce chemin est correct
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                term: request.term
+            },
+            success: function(data) {
+                console.log("Partner names received:", data); // Message de débogage
+                response(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.error("Error fetching partner names:", textStatus, errorThrown); // Message de débogage
+            }
+        });
+    }
+
+    // Appliquer l'autocomplétion aux champs de saisie des noms des partenaires
+    $(".partner-name").autocomplete({
+        source: fetchPartnerNames
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Ajouter les événements au chargement de la page
+    document.getElementById('add-partner-button').addEventListener('click', add_partner_section);
+    attach_delete_events();
+    applyAutocomplete();
+});

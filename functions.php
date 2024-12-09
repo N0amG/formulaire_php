@@ -23,7 +23,7 @@ function connectDB()
         // Configuration de l'attribut ERRMODE pour lancer des exceptions en cas d'erreur
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         // Affichage d'un message de succès dans la console du navigateur
-        consoleLog("Connexion réussie");
+        //consoleLog("Connexion réussie");
         return $pdo;
     } catch (PDOException $e) {
         // En cas d'erreur de connexion, affichage du message d'erreur et arrêt du script
@@ -263,4 +263,13 @@ function updateContract($pdo, $formId, $contractData, $partnersData)
         $pdo->rollBack();
         throw $e;
     }
+}
+
+function fetchPartnerNames($term) {
+    $pdo = connectDB();
+
+    $stmt = $pdo->prepare('SELECT nom FROM partenaire WHERE nom LIKE :term');
+    $stmt->execute(['term' => '%' . $term . '%']);
+
+    return json_encode($stmt->fetchAll(PDO::FETCH_COLUMN));
 }
