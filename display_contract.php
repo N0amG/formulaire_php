@@ -69,4 +69,4 @@ echo "<p>Le présent contrat de partenariat commercial est régi par les lois de
 echo "</div>";
 
 require_once('html_utils/footer.php');
-?>  
+?>
