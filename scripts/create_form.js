@@ -62,12 +62,10 @@ function confirmDelete() {
     return confirm("Êtes-vous sûr de vouloir supprimer ce formulaire ?");
 }
 
-$(function() {
-    $("#date_debut").datepicker({
-        showAnim: "slideDown"
-    });
-    $("#date_fin").datepicker({
-        showAnim: "slideDown"
+$(function () {
+    $("#date_debut, #date_fin").datepicker({
+        showAnim: "slideDown",
+        dateFormat: "yy-mm-dd" // Format YYYY-MM-DD
     });
 });
 

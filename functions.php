@@ -22,8 +22,6 @@ function connectDB()
         $pdo = new PDO("mysql:host={$db['host']};dbname={$db['dbname']}", $db['username'], $db['password']);
         // Configuration de l'attribut ERRMODE pour lancer des exceptions en cas d'erreur
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        // Affichage d'un message de succès dans la console du navigateur
-        //consoleLog("Connexion réussie");
         return $pdo;
     } catch (PDOException $e) {
         // En cas d'erreur de connexion, affichage du message d'erreur et arrêt du script
@@ -47,6 +45,7 @@ function getPOSTData(): array
             'contribution' => $partnerContributions[$i] ?? ''
         ];
     }
+    echo 'Données : '.$_POST['date_debut'] ?? '';
 
     $data = [
         'date_creation' => date('Y-m-d H:i:s'),
@@ -54,7 +53,7 @@ function getPOSTData(): array
         'activity_type' => $_POST['activityType'] ?? '',
         'partnership_name' => $_POST['partnershipName'] ?? '',
         'official_address' => $_POST['officialAdress'] ?? '',
-        'start_date' => $_POST['date'] ?? '',
+        'start_date' => $_POST['date_debut'] ?? '',
         'end_date' => $_POST['date_fin'] ?? '',
         'profit_loss_distribution' => $_POST['distributionOfProfitsAndLosses'] ?? '',
         'signing_partner_count' => $_POST['partnerCount'] ?? 0,
@@ -72,12 +71,18 @@ function sqlquery($pdo, $query, $params = [])
     return $stmt;
 }
 
+function formatDateForDisplay($date)
+{
+    // Formate une date au format 'd/m/Y'
+    return date('d/m/Y', strtotime($date));
+}
+
 function insertDataIntoForm($pdo, $data, $partners)
 {
     try {
         // Démarrer une transaction
         $pdo->beginTransaction();
-
+        
         // Vérifier si le nom du partenariat existe déjà
         $stmt = $pdo->prepare('SELECT id FROM formulaire WHERE partnership_name = :partnership_name');
         $stmt->execute(['partnership_name' => $data['partnership_name']]);
@@ -142,7 +147,6 @@ function insertDataIntoForm($pdo, $data, $partners)
 
 function pushToDatabase()
 {
-
     // Connexion à la base de données
     $pdo = connectDB();
     // Récupération des données du formulaire
@@ -151,7 +155,6 @@ function pushToDatabase()
     $partners = $data['partners'];
     // Insertion des données dans la base de données
     return insertDataIntoForm($pdo, $formData, $partners);
-
 }
 
 function getFormDataById($pdo, $formId)
@@ -176,8 +179,8 @@ function getFormDataById($pdo, $formId)
         'activity_type' => $formData['activity_type'],
         'partnership_name' => $formData['partnership_name'],
         'official_address' => $formData['official_address'],
-        'start_date' => $formData['start_date'],
-        'end_date' => $formData['end_date'],
+        'start_date' => $formData['start_date'], // Utiliser formatDateForInput pour les champs de formulaire
+        'end_date' => $formData['end_date'], // Utiliser formatDateForInput pour les champs de formulaire
         'profit_loss_distribution' => $formData['profit_loss_distribution'],
         'signing_partner_count' => $formData['signing_partner_count'],
         'country_code' => $formData['country_code'],
@@ -273,3 +276,4 @@ function fetchPartnerNames($term) {
 
     return json_encode($stmt->fetchAll(PDO::FETCH_COLUMN));
 }
+?>

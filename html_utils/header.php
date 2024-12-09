@@ -15,6 +15,7 @@ require_once('functions.php');
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
 </head>
 
 <body>
@@ -33,16 +34,16 @@ require_once('functions.php');
 
                 echo '
             <div id="edit-button-container">
-                <a href="edit_contract.php?id='.$formId.'" class="edit-button button button-small page-header">Édition</a>
+                <a href="edit_contract.php?id=' . $formId . '" class="edit-button button button-small page-header">Édition</a>
             </div>';
-            echo '
+                echo '
             <div id="delete-button-container">
-                <a href="delete_contract.php?id='.$formId.'" class="delete-button button button-small page-header" onclick="return confirmDelete()">Supprimer</a>
+                <a href="delete_contract.php?id=' . $formId . '" class="delete-button button button-small page-header" onclick="return confirmDelete()">Supprimer</a>
             </div>';
                 // Afficher un bouton pour imprimer le contrat qui redirige sur la page gen_pdf.php avec en paramètre GET l'id du contrat
                 echo '
             <div id="print-button-container">
-                <a href="gen_pdf.php?id='.$formId.'" class="print-button button button-small page-header">Imprimer</a>
+                <a href="gen_pdf.php?id=' . $formId . '" class="print-button button button-small page-header">Imprimer</a>
             </div>';
             } ?>
         </div>

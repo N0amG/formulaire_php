@@ -83,7 +83,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
     <p><strong>Adresse officielle</strong>: </p>
     <textarea id="officialAdress" name="officialAdress" rows="5" required style="resize: none;"><?php echo htmlspecialchars($formData['data']['official_address']); ?></textarea>
     <h2>2. Termes</h2>
-    <p>Le partenariat commence le <input type="date" id="date_debut" name="date" value="<?php echo htmlspecialchars($formData['data']['start_date']); ?>"> et finira le <input type="date" id="date_fin" name="date_fin" value="<?php echo htmlspecialchars($formData['data']['end_date']); ?>">.</p>
+    <p>Le partenariat commence le <input type="text" id="date_debut" name="date_debut" value="<?php echo htmlspecialchars($formData['data']['start_date']); ?>"> et finira le <input type="text" id="date_fin" name="date_fin" value="<?php echo htmlspecialchars($formData['data']['end_date']); ?>"></p>
     <br>
     <h2>3. Répartition des bénéfices et des pertes</h2>
     <textarea id="distributionOfProfitsAndLosses" name="distributionOfProfitsAndLosses" rows="5" required style="resize: none;"><?php echo htmlspecialchars($formData['data']['profit_loss_distribution']); ?></textarea>

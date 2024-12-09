@@ -99,7 +99,7 @@ $pdo = connectDB();
         <textarea id="officialAdress" name="officialAdress" rows="5" required style="resize: none;"></textarea>
 
         <h2>2. Termes</h2>
-        <p>Le partenariat commence le <input type="text" id="date_debut" name="date"> et finira le <input type="text" id="date_fin" name="date_fin"></p>
+        <p>Le partenariat commence le <input type="text" id="date_debut" name="date_debut"> et finira le <input type="text" id="date_fin" name="date_fin"></p>
 
         
         <br>

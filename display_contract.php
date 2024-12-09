@@ -54,7 +54,7 @@ echo "<br><p><strong>Nature des activités : </strong> " . htmlspecialchars($for
 echo "<br><p><strong>Adresse officielle : </strong> " . htmlspecialchars($formData['data']['official_address']) . "</p>";
 
 echo "<br><br><h2>2. Termes</h2>";
-echo "<p>Le partenariat commence le " . htmlspecialchars($formData['data']['start_date']) . " et se termine le " . htmlspecialchars($formData['data']['end_date']) . ".</p>";
+echo "<p>Le partenariat commence le " . htmlspecialchars(formatDateForDisplay($formData['data']['start_date'])) . " et se termine le " . htmlspecialchars(formatDateForDisplay($formData['data']['end_date'])) . ".</p>";
 
 echo "<br><h2>3. Répartition des bénéfices et des pertes</h2>";
 echo "<p>" . htmlspecialchars($formData['data']['profit_loss_distribution']) . "</p>";
