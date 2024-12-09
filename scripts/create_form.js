@@ -3,6 +3,10 @@ function update_partner_section_name() {
     partnerSections.forEach((partnerSection, index) => {
         partnerSection.querySelector('.partnerNum').textContent = "Partenaire " + (index + 1) + ":";
     });
+    // Mettre à jour le champ de texte après la mise à jour des numéros de partenaire
+    partnerCount = partnerSections.length;
+    document.getElementById('partnerCount').max = partnerCount;
+    document.getElementById('partnerCount').value = partnerCount;
 
     // Mettre à jour la valeur du champ caché numPartnersInput
     const hiddenInput = document.getElementById('numPartnersInput');
@@ -25,10 +29,6 @@ function add_partner_section() {
     // Mettre à jour les numéros de partenaire et le champ caché
     update_partner_section_name();
     attach_delete_events();
-        // Mettre à jour le champ de texte après la mise à jour des numéros de partenaire
-    var partnerCount = document.querySelectorAll('.partner-section').length;
-    document.getElementById('partnerCount').max = partnerCount;
-    document.getElementById('partnerCount').value = partnerCount;
 }
 function delete_section(element) {
     const parent = element.closest('.partner-section');
