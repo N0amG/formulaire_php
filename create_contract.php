@@ -79,10 +79,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     ?>
     
     <h2>1. Nom du Partenariat et Activité</h2>
-    <p><strong>Nature des activités</strong>: </p>
-    <textarea id="activityType" name="activityType" rows="5" required style="resize: none;"></textarea>
     <p><strong>Nom du Partenariat</strong>: </p>
     <textarea id="partnershipName" name="partnershipName" rows="5" required style="resize: none;"></textarea>
+    <p><strong>Nature des activités</strong>: </p>
+    <textarea id="activityType" name="activityType" rows="5" required style="resize: none;"></textarea>
     <p><strong>Adresse officielle</strong>: </p>
     <textarea id="officialAdress" name="officialAdress" rows="5" required style="resize: none;"></textarea>
 

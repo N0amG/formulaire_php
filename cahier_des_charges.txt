@@ -1,4 +1,3 @@
-pdf
-jquery
-style => bootstrap
+pdf : OK
+jquery : En cours
 Autocomplétion quand on choisi un partenaire (librairie ?)

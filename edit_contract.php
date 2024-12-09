@@ -76,10 +76,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
     </div>
 
     <h2>1. Nom du Partenariat et Activité</h2>
-    <p><strong>Nature des activités</strong>: </p>
-    <textarea id="activityType" name="activityType" rows="5" required style="resize: none;"><?php echo htmlspecialchars($formData['data']['activity_type']); ?></textarea>
     <p><strong>Nom du Partenariat</strong>: </p>
     <textarea id="partnershipName" name="partnershipName" rows="5" required style="resize: none;"><?php echo htmlspecialchars($formData['data']['partnership_name']); ?></textarea>
+    <p><strong>Nature des activités</strong>: </p>
+    <textarea id="activityType" name="activityType" rows="5" required style="resize: none;"><?php echo htmlspecialchars($formData['data']['activity_type']); ?></textarea>
     <p><strong>Adresse officielle</strong>: </p>
     <textarea id="officialAdress" name="officialAdress" rows="5" required style="resize: none;"><?php echo htmlspecialchars($formData['data']['official_address']); ?></textarea>
     <h2>2. Termes</h2>

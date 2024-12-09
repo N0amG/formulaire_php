@@ -13,7 +13,7 @@ $contracts = sqlquery($pdo, $query)->fetchAll(PDO::FETCH_ASSOC);
 
 <h1>Liste des Contrats</h1>
 <div>
-    <a href="create_contract.php" class="new-contract-button" style="background-color: green; color: white; padding: 10px; text-decoration: none;">Nouveau Contrat</a>
+    <a href="create_contract.php" class="new-contract-button">Nouveau Contrat</a>
 </div>
 <br>
 
@@ -28,9 +28,9 @@ $contracts = sqlquery($pdo, $query)->fetchAll(PDO::FETCH_ASSOC);
                         <p><strong>Nombre de partenaires :</strong> <?php echo htmlspecialchars($contract['num_partners']); ?></p>
                     </div>
                     <div class="contract-actions">
-                        <a href="display_contract.php?id=<?php echo $contract['id']; ?>" class="display-button" style="background-color: green; color: white; margin-right: 10px;">Afficher</a>
-                        <a href="edit_contract.php?id=<?php echo $contract['id']; ?>" class="edit-button" style="background-color: blue; color: white; margin-right: 10px;">Édition</a>
-                        <a href="delete_contract.php?id=<?php echo $contract['id']; ?>" class="delete-button" style="background-color: red; color: white;">Supprimer</a>
+                        <a href="display_contract.php?id=<?php echo $contract['id']; ?>" class="display-button">Afficher</a>
+                        <a href="edit_contract.php?id=<?php echo $contract['id']; ?>" class="edit-button">Édition</a>
+                        <a href="delete_contract.php?id=<?php echo $contract['id']; ?>" class="delete-button">Supprimer</a>
                     </div>
                 </div>
             </li>
