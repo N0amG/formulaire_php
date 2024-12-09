@@ -87,17 +87,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <textarea id="officialAdress" name="officialAdress" rows="5" required style="resize: none;"></textarea>
 
     <h2>2. Termes</h2>
-    <p>Le partenariat commence le <input type="date" id="date_debut" name="date"> et finira le <input type="date"
-            id="date_fin" name="date_fin">.</p>
+    <p>Le partenariat commence le <input type="text" id="date_debut" name="date"> et finira le <input type="text" id="date_fin" name="date_fin"></p>
+
+    
+    <script>
+        $(function() {
+            $("#date_debut").datepicker({
+                showAnim: "slideDown"
+            });
+            $("#date_fin").datepicker({
+                showAnim: "slideDown"
+            });
+        });
+    </script>
+    
     <br>
     <h2>3. Répartition des bénéfices et des pertes</h2>
     <textarea id="distributionOfProfitsAndLosses" name="distributionOfProfitsAndLosses" rows="5" required
         style="resize: none;"></textarea>
 
     <h2>4. Modalités bancaires</h2>
-    <p>Les chèques doivent être signés par <input type="number" id="partnerCount" name="partnerCount" min="1" max="100"
-            value="1"> des partenaires.</p>
-
+    <p>Les chèques doivent être signés par <input type="number" id="partnerCount" name="partnerCount" min="1" max="<?php echo $numPartners ?>" value="<?php echo $numPartners ?>"> des partenaires.</p>
     <h2>5. Juridiction</h2>
     <p>Le présent contrat de partenariat commercial est régi par les lois de l'État de
         <select id="countryOfContract" name="country" required>

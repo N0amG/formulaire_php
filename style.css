@@ -32,6 +32,11 @@ textarea {
   border-radius: 5px;
 }
 
+input[type="text"]#date_debut,
+input[type="text"]#date_fin {
+  width: 20%; /* Définir la largeur souhaitée */
+}
+
 input[type="submit"], button#add-partner-button, button#submitFinalForm {
   background-color: #4caf50;
   color: white;
@@ -58,7 +63,8 @@ input[type="submit"]:hover, button:hover {
 
 #theme-switcher-container {
   margin-bottom: 10px;
-  text-align: right;
+  display: flex;
+  justify-content: flex-end;
 }
 
 #theme-switcher-container > button {
@@ -72,6 +78,7 @@ input[type="submit"]:hover, button:hover {
 #theme-switcher-container > button:hover {
   background-color: #666;
 }
+
 .delete-partner-container {
   display: flex;
   justify-content: right;
@@ -101,6 +108,7 @@ input[type="submit"]:hover, button:hover {
     font-size: 14px;
     margin-top: 5px;
 }
+
 #partnerCount {
   width: 20px; /* Définir la largeur souhaitée */
 }
@@ -137,6 +145,7 @@ body.dark-theme #final-contract-container {
   line-height: 1.6; /* Hauteur de ligne */
   margin: 10px 0; /* Marge verticale */
 }
+
 .contract {
     display: flex;
     justify-content: space-between;
@@ -155,11 +164,9 @@ body.dark-theme #final-contract-container {
     align-items: center;
 }
 
-
-
-#new_contract_container {
+#new-contract-container {
     display: flex;
-    justify-content: right;
+    justify-content: center;
     align-items: center;
     margin-bottom: 10px;
 }
@@ -169,19 +176,40 @@ body.dark-theme #final-contract-container {
 #print-button-container {
     margin-top: 10px;
     display: flex;
-    justify-content: right;
-
+    justify-content: flex-end;
 }
 
+/* Boutons génériques */
+.button {
+    color: white;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    margin: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.button-large {
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+
+.button-medium {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.button-small {
+    padding: 5px 10px;
+}
+
+/* Styles spécifiques aux boutons */
 .menu-button {
     background-color: #0369ef;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s ease;
 }
 
 .menu-button:hover {
@@ -190,11 +218,7 @@ body.dark-theme #final-contract-container {
 
 .new-contract-button {
     background-color: green;
-    color: white;
-    padding: 10px;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    width : 30%
 }
 
 .new-contract-button:hover {
@@ -203,13 +227,6 @@ body.dark-theme #final-contract-container {
 
 .display-button {
     background-color: green;
-    color: white;
-    padding: 5px 10px;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-    margin-right: 10px;
-    transition: background-color 0.3s ease;
 }
 
 .display-button:hover {
@@ -218,13 +235,6 @@ body.dark-theme #final-contract-container {
 
 .edit-button {
     background-color: rgb(216, 202, 0);
-    color: white;
-    padding: 5px 10px;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-    margin-right: 0px;
-    transition: background-color 0.3s ease;
 }
 
 .edit-button:hover {
@@ -233,12 +243,6 @@ body.dark-theme #final-contract-container {
 
 .delete-button {
     background-color: red;
-    color: white;
-    padding: 5px 10px;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
 }
 
 .delete-button:hover {
@@ -247,14 +251,19 @@ body.dark-theme #final-contract-container {
 
 .print-button {
     background-color: green;
-    color: white;
-    padding: 5px 10px;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
 }
 
 .print-button:hover {
     background-color: darkgreen;
+}
+
+#nav-button-container {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    width: 100%;
+}
+
+.page-header {
+  width: 4%
 }

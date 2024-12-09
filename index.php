@@ -12,25 +12,26 @@ $contracts = sqlquery($pdo, $query)->fetchAll(PDO::FETCH_ASSOC);
 <?php require_once('html_utils/header.php'); ?>
 
 <h1>Liste des Contrats</h1>
-<div>
-    <a href="create_contract.php" class="new-contract-button">Nouveau Contrat</a>
+<div id = "new-contract-container">
+    <a href="new_contract.php" class="new-contract-button button button-medium">Nouveau Contrat</a>
 </div>
 <br>
 
 <?php if (count($contracts) > 0): ?>
-    <ul>
+    <ul class="fiche-contract">
         <?php foreach ($contracts as $contract): ?>
             <li>
                 <div class="contract">
                     <div class="contract-info">
                         <p><strong>Nom du contrat :</strong> <?php echo htmlspecialchars($contract['partnership_name']); ?></p>
                         <p><strong>Date de création :</strong> <?php echo htmlspecialchars($contract['date_creation']); ?></p>
-                        <p><strong>Nombre de partenaires :</strong> <?php echo htmlspecialchars($contract['num_partners']); ?></p>
+                        <p><strong>Nombre de partenaires :</strong> <?php echo htmlspecialchars($contract['num_partners']); ?>
+                        </p>
                     </div>
                     <div class="contract-actions">
-                        <a href="display_contract.php?id=<?php echo $contract['id']; ?>" class="display-button">Afficher</a>
-                        <a href="edit_contract.php?id=<?php echo $contract['id']; ?>" class="edit-button">Édition</a>
-                        <a href="delete_contract.php?id=<?php echo $contract['id']; ?>" class="delete-button">Supprimer</a>
+                        <a href="display_contract.php?id=<?php echo $contract['id']; ?>" class="display-button button button-small">Afficher</a>
+                        <a href="edit_contract.php?id=<?php echo $contract['id']; ?>" class="edit-button button button-small">Édition</a>
+                        <a href="delete_contract.php?id=<?php echo $contract['id']; ?>" class="delete-button button button-small">Supprimer</a>
                     </div>
                 </div>
             </li>
