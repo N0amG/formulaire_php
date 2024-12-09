@@ -24,15 +24,20 @@
             <?php
             // Si on se trouve sur la page display_contract.php, rajouter le bouton d'édition
             if (basename($_SERVER['PHP_SELF']) == 'display_contract.php') {
+                $formId = isset($_GET['id']) ? $_GET['id'] : 0;
+
                 echo '
             <div id="edit-button-container">
-                <a href="edit_contract.php?id=1" class="edit-button button button-small page-header">Édition</a>
+                <a href="edit_contract.php?id='.$formId.'" class="edit-button button button-small page-header">Édition</a>
             </div>';
-
+            echo '
+            <div id="delete-button-container">
+                <a href="delete_contract.php?id='.$formId.'" class="delete-button button button-small page-header" onclick="return confirmDelete()">Supprimer</a>
+            </div>';
                 // Afficher un bouton pour imprimer le contrat qui redirige sur la page gen_pdf.php avec en paramètre GET l'id du contrat
                 echo '
             <div id="print-button-container">
-                <a href="gen_pdf.php?id=1" class="print-button button button-small page-header">Imprimer</a>
+                <a href="gen_pdf.php?id='.$formId.'" class="print-button button button-small page-header">Imprimer</a>
             </div>';
             } ?>
         </div>

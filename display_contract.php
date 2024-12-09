@@ -70,3 +70,4 @@ echo "</div>";
 
 require_once('html_utils/footer.php');
 ?>
+<script src="scripts/create_form.js" defer></script>

@@ -56,6 +56,10 @@ function handleDeletePartner(event) {
     delete_section(button);
 }
 
+function confirmDelete() {
+    return confirm("Êtes-vous sûr de vouloir supprimer ce formulaire ?");
+}
+
 // Ajouter les événements au chargement de la page
 document.getElementById('add-partner-button').addEventListener('click', add_partner_section);
 attach_delete_events();

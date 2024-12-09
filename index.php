@@ -31,7 +31,7 @@ $contracts = sqlquery($pdo, $query)->fetchAll(PDO::FETCH_ASSOC);
                     <div class="contract-actions">
                         <a href="display_contract.php?id=<?php echo $contract['id']; ?>" class="display-button button button-small">Afficher</a>
                         <a href="edit_contract.php?id=<?php echo $contract['id']; ?>" class="edit-button button button-small">Édition</a>
-                        <a href="delete_contract.php?id=<?php echo $contract['id']; ?>" class="delete-button button button-small">Supprimer</a>
+                        <a href="delete_contract.php?id=<?php echo $contract['id']; ?>" class="delete-button button button-small" onclick="return confirmDelete()">Supprimer</a>
                     </div>
                 </div>
             </li>
@@ -42,3 +42,4 @@ $contracts = sqlquery($pdo, $query)->fetchAll(PDO::FETCH_ASSOC);
 <?php endif; ?>
 
 <?php require_once('html_utils/footer.php'); ?>
+<script src="scripts/create_form.js" defer></script>
