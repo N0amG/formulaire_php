@@ -1,4 +1,4 @@
 pdf : OK
 Autocomplétion : Finis
-jquery : En cours
+jquery : Okay
 READMDE.md
