@@ -1,4 +1,0 @@
-pdf : OK
-Autocomplétion : Finis
-jquery : Okay
-READMDE.md
