@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
     <textarea id="distributionOfProfitsAndLosses" name="distributionOfProfitsAndLosses" rows="5" required style="resize: none;"><?php echo htmlspecialchars($formData['data']['profit_loss_distribution']); ?></textarea>
 
     <h2>4. Modalités bancaires</h2>
-    <p>Les chèques doivent être signés par <input type="number" id="partnerCount" name="partnerCount" min="1" max="<?php echo count($formData['partners']); ?>" value="<?php echo htmlspecialchars($formData['data']['signing_partner_count']); ?>"> des partenaires.</p>
+    <p>Les chèques doivent être signés par <input type="number" id="partnerCount" class="spinner-input" name="partnerCount" min="1" max="<?php echo count($formData['partners']); ?>" value="<?php echo htmlspecialchars($formData['data']['signing_partner_count']); ?>"> des partenaires.</p>
 
     <h2>5. Juridiction</h2>
     <p>Le présent contrat de partenariat commercial est régi par les lois de l'État de 

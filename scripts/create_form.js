@@ -120,6 +120,58 @@ function applyAutocomplete() {
 
 }
 
+$(function() {
+    var spinners = $(".spinner-input").spinner();
+    var selectmenu = $("select").selectmenu();
+    $("button").button();
+
+    // Ajuster la largeur des éléments du spinner pour correspondre à celle des inputs d'origine
+    spinners.each(function() {
+        var originalWidth = $(this).width() + 30;
+        $(this).closest(".ui-spinner").css('width', originalWidth);
+    });
+
+    // Vérifier la classe du body et appliquer les couleurs appropriées
+    if ($("body").hasClass("dark-theme")) {
+        spinners.each(function() {
+            // Appliquer les couleurs de la classe dark-theme aux éléments du spinner
+            $(this).closest(".ui-spinner").css({
+                'background-color': '#333', // Couleur de fond de dark-theme
+                'color': '#fff', // Couleur du texte de dark-theme
+                'border-color': '#555' // Couleur de la bordure de dark-theme
+            });
+
+            // Appliquer les couleurs de la classe dark-theme aux inputs du spinner
+            $(this).css({
+                'background-color': '#333', // Couleur de fond de dark-theme
+                'color': '#fff', // Couleur du texte de dark-theme
+                'border-color': '#555' // Couleur de la bordure de dark-theme
+            });
+        });
+
+        // Appliquer les couleurs de la classe dark-theme aux éléments selectmenu
+        selectmenu.selectmenu("widget").css({
+            'background-color': '#333', // Couleur de fond de dark-theme
+            'color': '#fff', // Couleur du texte de dark-theme
+            'border-color': '#555' // Couleur de la bordure de dark-theme
+        });
+
+        // Appliquer les couleurs de la classe dark-theme aux boutons
+        $("button").button("widget").css({
+            'background-color': '#333', // Couleur de fond de dark-theme
+            'color': '#fff', // Couleur du texte de dark-theme
+            'border-color': '#555' // Couleur de la bordure de dark-theme
+        });
+    }
+});
+
+$( function() {
+    $( "#countryOfContract" )
+      .selectmenu()
+      .selectmenu( "menuWidget" )
+        .addClass( "overflow" );
+  } );
+
 document.addEventListener('DOMContentLoaded', function () {
     // Ajouter les événements au chargement de la page
     document.getElementById('add-partner-button').addEventListener('click', add_partner_section);

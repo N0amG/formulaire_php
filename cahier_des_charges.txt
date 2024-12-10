@@ -1,3 +1,4 @@
 pdf : OK
+Autocomplétion : Finis
 jquery : En cours
-Autocomplétion quand on choisi un partenaire (librairie ?)
+READMDE.md

@@ -23,6 +23,9 @@ label {
 
 input[type="text"],
 input[type="number"],
+.spinner-input,
+.ui-spinner,
+.ui-spinner-input,
 textarea {
   width: 95%;
   padding: 10px;
@@ -32,9 +35,11 @@ textarea {
   border-radius: 5px;
 }
 
+
+
 input[type="text"]#date_debut,
 input[type="text"]#date_fin {
-  width: 20%; /* Définir la largeur souhaitée */
+  width: 10%; /* Définir la largeur souhaitée */
 }
 
 input[type="submit"], button#add-partner-button, button#submitFinalForm {
@@ -52,7 +57,7 @@ input[type="submit"]:hover, button:hover {
 }
 
 .light-theme {
-  background-color: #f0f0f0;
+  background-color: #ffffff;
   color : #333;
 }
 
@@ -110,7 +115,7 @@ input[type="submit"]:hover, button:hover {
 }
 
 #partnerCount {
-  width: 20px; /* Définir la largeur souhaitée */
+  width: 200px; /* Définir la largeur souhaitée */
 }
 
 #final-contract-container {
@@ -268,3 +273,4 @@ body.dark-theme #final-contract-container {
 .page-header {
   width: 4%
 }
+

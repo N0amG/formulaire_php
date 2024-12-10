@@ -44,7 +44,7 @@ $pdo = connectDB();
         echo '<fieldset class="form-section">';
         echo '<legend>Sélection du Nombre de Partenaires</legend>';
         echo '<label for="numPartners">Combien de partenaires ?</label>';
-        echo '<input type="number" id="numPartners" name="numPartners" min="1" max="100" required />';
+        echo '<input type="number" id="numPartners" class ="spinner-input" name="numPartners" min="1" max="100" required />';
         echo '<input type="submit" value="Valider" />';
         echo '</fieldset>';
         echo '</form>';
@@ -75,7 +75,7 @@ $pdo = connectDB();
                 echo "<label>Nom du Partenaire</label>";
                 echo "<input type='text' class='partner-name' name='partner[]' required>";
                 echo "<label>Contribution du Partenaire</label>";
-                echo "<textarea name='contribution[]' rows='3' required style='resize: none;'></textarea>";
+                echo "<textarea class ='contributions' name='contribution[]' rows='3' required style='resize: none;'></textarea>";
                 echo '<br>';
                 echo '<br>';
                 echo '</div>';
@@ -108,7 +108,7 @@ $pdo = connectDB();
             style="resize: none;"></textarea>
 
         <h2>4. Modalités bancaires</h2>
-        <p>Les chèques doivent être signés par <input type="number" id="partnerCount" name="partnerCount" min="1" max="<?php echo $numPartners ?>" value="<?php echo $numPartners ?>"> des partenaires.</p>
+        <p>Les chèques doivent être signés par <input type="number" id="partnerCount" class ="spinner-input" name="partnerCount" min="1" max="<?php echo $numPartners ?>" value="<?php echo $numPartners ?>"> des partenaires.</p>
         <h2>5. Juridiction</h2>
         <p>Le présent contrat de partenariat commercial est régi par les lois de l'État de
             <select id="countryOfContract" name="country" required>
