@@ -1,28 +1,24 @@
-
 SET FOREIGN_KEY_CHECKS = 0; 
 TRUNCATE TABLE formulaire; 
 TRUNCATE TABLE partenaire; 
 TRUNCATE TABLE partenaire_formulaire; 
-SET FOREIGN_KEY_CHECKS = 1;
+TRUNCATE TABLE compte;
 
+INSERT INTO compte (email, nom, prenom, mdp) VALUES
+('user1@example.com', 'Nom1', 'Prenom1', 'password1'),
+('user2@example.com', 'Nom2', 'Prenom2', 'password2');
 
-SET FOREIGN_KEY_CHECKS = 0;
-
-TRUNCATE TABLE formulaire;
-TRUNCATE TABLE partenaire;
-TRUNCATE TABLE partenaire_formulaire;
-
-INSERT INTO formulaire (date_creation, num_partners, activity_type, partnership_name, official_address, start_date, end_date, profit_loss_distribution, signing_partner_count, country_code) VALUES
-('2023-01-01 10:00:00', 3, 'Commerce', 'Partenariat Alpha', '123 Rue de Paris, Paris', '2023-01-01', '2023-12-31', '50-50', 2, 'FR'),
-('2023-02-01 11:00:00', 2, 'Technologie', 'Partenariat Beta', '456 Avenue de Lyon, Lyon', '2023-02-01', '2023-11-30', '60-40', 1, 'FR'),
-('2023-03-01 12:00:00', 4, 'Santé', 'Partenariat Gamma', '789 Boulevard de Marseille, Marseille', '2023-03-01', '2023-10-31', '70-30', 3, 'FR'),
-('2023-04-01 13:00:00', 3, 'Éducation', 'Partenariat Delta', '101 Rue de Bordeaux, Bordeaux', '2023-04-01', '2023-09-30', '80-20', 2, 'FR'),
-('2023-05-01 14:00:00', 2, 'Finance', 'Partenariat Epsilon', '202 Avenue de Nice, Nice', '2023-05-01', '2023-08-31', '50-50', 1, 'FR'),
-('2023-06-01 15:00:00', 5, 'Agriculture', 'Partenariat Zeta', '303 Boulevard de Toulouse, Toulouse', '2023-06-01', '2023-12-31', '60-40', 4, 'FR'),
-('2023-07-01 16:00:00', 3, 'Transport', 'Partenariat Eta', '404 Rue de Nantes, Nantes', '2023-07-01', '2023-12-31', '70-30', 2, 'FR'),
-('2023-08-01 17:00:00', 4, 'Tourisme', 'Partenariat Theta', '505 Avenue de Strasbourg, Strasbourg', '2023-08-01', '2023-12-31', '80-20', 3, 'FR'),
-('2023-09-01 18:00:00', 2, 'Immobilier', 'Partenariat Iota', '606 Boulevard de Lille, Lille', '2023-09-01', '2023-12-31', '50-50', 1, 'FR'),
-('2023-10-01 19:00:00', 3, 'Énergie', 'Partenariat Kappa', '707 Rue de Rennes, Rennes', '2023-10-01', '2023-12-31', '60-40', 2, 'FR');
+INSERT INTO formulaire (date_creation, num_partners, activity_type, partnership_name, official_address, start_date, end_date, profit_loss_distribution, signing_partner_count, country_code, id_compte) VALUES
+('2023-01-01 10:00:00', 3, 'Commerce', 'Partenariat Alpha', '123 Rue de Paris, Paris', '2023-01-01', '2023-12-31', '50-50', 2, 'FR', 1),
+('2023-02-01 11:00:00', 2, 'Technologie', 'Partenariat Beta', '456 Avenue de Lyon, Lyon', '2023-02-01', '2023-11-30', '60-40', 1, 'FR', 1),
+('2023-03-01 12:00:00', 4, 'Santé', 'Partenariat Gamma', '789 Boulevard de Marseille, Marseille', '2023-03-01', '2023-10-31', '70-30', 3, 'FR', 1),
+('2023-04-01 13:00:00', 3, 'Éducation', 'Partenariat Delta', '101 Rue de Bordeaux, Bordeaux', '2023-04-01', '2023-09-30', '80-20', 2, 'FR', 1),
+('2023-05-01 14:00:00', 2, 'Finance', 'Partenariat Epsilon', '202 Avenue de Nice, Nice', '2023-05-01', '2023-08-31', '50-50', 1, 'FR', 1),
+('2023-06-01 15:00:00', 5, 'Agriculture', 'Partenariat Zeta', '303 Boulevard de Toulouse, Toulouse', '2023-06-01', '2023-12-31', '60-40', 4, 'FR', 2),
+('2023-07-01 16:00:00', 3, 'Transport', 'Partenariat Eta', '404 Rue de Nantes, Nantes', '2023-07-01', '2023-12-31', '70-30', 2, 'FR', 2),
+('2023-08-01 17:00:00', 4, 'Tourisme', 'Partenariat Theta', '505 Avenue de Strasbourg, Strasbourg', '2023-08-01', '2023-12-31', '80-20', 3, 'FR', 2),
+('2023-09-01 18:00:00', 2, 'Immobilier', 'Partenariat Iota', '606 Boulevard de Lille, Lille', '2023-09-01', '2023-12-31', '50-50', 1, 'FR', 2),
+('2023-10-01 19:00:00', 3, 'Énergie', 'Partenariat Kappa', '707 Rue de Rennes, Rennes', '2023-10-01', '2023-12-31', '60-40', 2, 'FR', 2);
 
 INSERT INTO partenaire (nom) VALUES
 ('Alice'),

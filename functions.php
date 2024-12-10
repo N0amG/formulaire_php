@@ -76,13 +76,22 @@ function formatDateForDisplay($date)
     // Formate une date au format 'd/m/Y'
     return date('d/m/Y', strtotime($date));
 }
-
 function insertDataIntoForm($pdo, $data, $partners)
 {
     try {
         // Démarrer une transaction
         $pdo->beginTransaction();
-        
+
+        // Récupérer l'ID de l'utilisateur connecté à partir de la session
+        session_start();
+        if (!isset($_SESSION['user'])) {
+            throw new Exception("Utilisateur non connecté.");
+        }
+        $userId = $_SESSION['user']['id'];
+
+        // Ajouter l'ID de l'utilisateur aux données du formulaire
+        $data['id_compte'] = $userId;
+
         // Vérifier si le nom du partenariat existe déjà
         $stmt = $pdo->prepare('SELECT id FROM formulaire WHERE partnership_name = :partnership_name');
         $stmt->execute(['partnership_name' => $data['partnership_name']]);
@@ -97,10 +106,10 @@ function insertDataIntoForm($pdo, $data, $partners)
         $query = "INSERT INTO formulaire 
           (date_creation, num_partners, activity_type, partnership_name, 
            official_address, start_date, end_date, profit_loss_distribution, signing_partner_count, 
-           country_code) 
+           country_code, id_compte) 
           VALUES (:date_creation, :num_partners, :activity_type, :partnership_name, 
                   :official_address, :start_date, :end_date, :profit_loss_distribution, 
-                  :signing_partner_count, :country_code)";
+                  :signing_partner_count, :country_code, :id_compte)";
         sqlquery($pdo, $query, $data);
         $idForm = $pdo->lastInsertId();
 
@@ -285,4 +294,27 @@ function fetchContributions($term) {
 
     return json_encode($stmt->fetchAll(PDO::FETCH_COLUMN));
 }
+
+
+function getUserByEmail($email) {
+    $pdo = connectDB();
+
+    $stmt = $pdo->prepare('SELECT * FROM compte WHERE email = :email');
+    $stmt->execute(['email' => $email]);
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+function passwordVerify($email, $password) {
+    $pdo = connectDB();
+
+    $stmt = $pdo->prepare('SELECT mdp FROM compte WHERE email = :email');
+    $stmt->execute(['email' => $email]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    $pdo = null; // Close the connection
+
+    return ($user && $password === $user['mdp']);
+}
+
 ?>

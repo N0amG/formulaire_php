@@ -23,6 +23,8 @@ label {
 
 input[type="text"],
 input[type="number"],
+input[type="email"],
+input[type="password"],
 .spinner-input,
 .ui-spinner,
 .ui-spinner-input,
@@ -35,14 +37,12 @@ textarea {
   border-radius: 5px;
 }
 
-
-
 input[type="text"]#date_debut,
 input[type="text"]#date_fin {
   width: 10%; /* Définir la largeur souhaitée */
 }
 
-input[type="submit"], button#add-partner-button, button#submitFinalForm {
+input[type="submit"], button#add-partner-button, button#submitFinalForm, button[type="submit"] {
   background-color: #4caf50;
   color: white;
   padding: 10px 20px;
@@ -179,7 +179,8 @@ body.dark-theme #final-contract-container {
 #menu-container,
 #edit-button-container,
 #delete-button-container,
-#print-button-container {
+#print-button-container,
+#logout-button-container {
     margin-top: 10px;
     display: flex;
     justify-content: flex-end;
@@ -192,7 +193,7 @@ body.dark-theme #final-contract-container {
     border: none;
     border-radius: 4px;
     transition: background-color 0.3s ease;
-    margin: 4px;
+    margin: 2px;
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -207,10 +208,13 @@ body.dark-theme #final-contract-container {
 .button-medium {
     padding: 10px;
     border-radius: 5px;
+    width: 100px;
 }
 
 .button-small {
     padding: 5px 10px;
+    min-width: 80px;
+    height: 20px;
 }
 
 /* Styles spécifiques aux boutons */
@@ -224,7 +228,7 @@ body.dark-theme #final-contract-container {
 
 .new-contract-button {
     background-color: green;
-    width : 30%
+    width : 20%
 }
 
 .new-contract-button:hover {
@@ -247,12 +251,16 @@ body.dark-theme #final-contract-container {
     background-color: rgb(184, 172, 0);
 }
 
-.delete-button {
+.delete-button , .logout-button {
     background-color: red;
 }
 
-.delete-button:hover {
+.delete-button:hover, .logout-button:hover {
     background-color: darkred;
+}
+
+#logout-button {
+  width: 100px;
 }
 
 .print-button {
@@ -273,4 +281,3 @@ body.dark-theme #final-contract-container {
 .page-header {
   width: 4%
 }
-

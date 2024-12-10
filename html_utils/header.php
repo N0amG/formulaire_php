@@ -2,7 +2,6 @@
 require_once('functions.php');
 ?>
 
-
 <!DOCTYPE html>
 <html lang="fr">
 
@@ -15,19 +14,30 @@ require_once('functions.php');
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-
 </head>
 
 <body>
     <header>
         <div id="nav-button-container">
             <div id="theme-switcher-container">
-                <button type="button" class=" button button-medium" id="theme-switcher">Mode Sombre</button>
+                <button type="button" class="button button-medium" id="theme-switcher">Mode Sombre</button>
             </div>
+
+            <?php
+            if (basename($_SERVER['PHP_SELF']) != 'login.php') {
+                echo '
             <div id="menu-container">
                 <a href="index.php" class="menu-button button button-small page-header">Menu</a>
             </div>
-            <?php
+            ';
+            }
+
+            if (basename($_SERVER['PHP_SELF']) == 'index.php') {
+                echo '
+            <div id="logout-button-container">
+                <a href="logout.php" class="logout-button button button-small page-header">Déconnexion</a>
+            </div>';
+            }
             // Si on se trouve sur la page display_contract.php, rajouter le bouton d'édition
             if (basename($_SERVER['PHP_SELF']) == 'display_contract.php') {
                 $formId = isset($_GET['id']) ? $_GET['id'] : 0;
