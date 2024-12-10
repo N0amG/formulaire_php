@@ -62,9 +62,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
                     <button type="button" class="delete-partner-button">X</button>
                 </div>
                 <label>Nom du Partenaire</label>
-                <input type="text" name="partner[]" value="<?php echo htmlspecialchars($partner['nom']); ?>" required>
+                <input type="text" class="partner-name" name="partner[]" value="<?php echo htmlspecialchars($partner['nom']); ?>" required>
                 <label>Contribution du Partenaire</label>
-                <textarea name="contribution[]" rows="3" required style="resize: none;"><?php echo htmlspecialchars($partner['contribution']); ?></textarea>
+                <textarea name="contribution[]" class="contributions" rows="3" required style="resize: none;"><?php echo htmlspecialchars($partner['contribution']); ?></textarea>
                 <br>
                 <br>
             </div>

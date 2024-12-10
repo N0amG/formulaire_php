@@ -276,4 +276,13 @@ function fetchPartnerNames($term) {
 
     return json_encode($stmt->fetchAll(PDO::FETCH_COLUMN));
 }
+
+function fetchContributions($term) {
+    $pdo = connectDB();
+
+    $stmt = $pdo->prepare('SELECT contribution FROM partenaire_formulaire WHERE contribution LIKE :term');
+    $stmt->execute(['term' => '%' . $term . '%']);
+
+    return json_encode($stmt->fetchAll(PDO::FETCH_COLUMN));
+}
 ?>

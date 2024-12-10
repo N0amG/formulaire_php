@@ -80,11 +80,30 @@ function applyAutocomplete() {
             data: {
                 term: request.term
             },
-            success: function(data) {
+            success: function (data) {
                 console.log("Partner names received:", data); // Message de débogage
                 response(data);
             },
-            error: function(jqXHR, textStatus, errorThrown) {
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.error("Error fetching partner names:", textStatus, errorThrown); // Message de débogage
+            }
+        });
+    }
+    function fetchContributions(request, response) {
+        console.log("Fetching contributions for term:", request.term); // Message de débogage
+        $.ajax({
+            url: 'fetch_contributions.php', // Assurez-vous que ce chemin est correct
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                term: request.term
+            },
+            success: function (data) {
+                console.log("contributions received:", data); // Message de débogage
+                response(data);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
                 console.log(jqXHR);
                 console.error("Error fetching partner names:", textStatus, errorThrown); // Message de débogage
             }
@@ -95,9 +114,13 @@ function applyAutocomplete() {
     $(".partner-name").autocomplete({
         source: fetchPartnerNames
     });
+    $(".contributions").autocomplete({
+        source: fetchContributions
+    });
+
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Ajouter les événements au chargement de la page
     document.getElementById('add-partner-button').addEventListener('click', add_partner_section);
     attach_delete_events();
