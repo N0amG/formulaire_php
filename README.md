@@ -4,7 +4,7 @@ Ce projet est une application web permettant de créer, modifier, afficher et su
 
 # Mise en Place
 
-Créer une bdd nommée **Page**: `formulaire_db`, puis cliquer sur cette bdd, cliquer sur importer, et importer le fichier formulaire_db.sql
+Créer une bdd nommée `formulaire_db`, puis cliquer sur cette bdd, cliquer sur importer, et importer le fichier formulaire_db.sql
 
 ## Fonctionnalités
 
