@@ -93,6 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['id'])) {
 
     <h2>5. Juridiction</h2>
     <p>Le présent contrat de partenariat commercial est régi par les lois de l'État de 
+    <!-- Sélection du pays du contrat -par un menu déroulant -->
     <select id="countryOfContract" name="country" required>
         <option value="">Sélectionnez un pays</option>
         <option value="FR" <?php echo ($formData['data']['country_code'] == 'FR') ? 'selected' : ''; ?>>France</option>

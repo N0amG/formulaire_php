@@ -18,7 +18,7 @@ if (isset($_GET['id'])) {
     echo "<p>Erreur : ID du formulaire manquant.</p>";
     exit;
 }
-
+// Définition des pays
 $countries = [
     'FR' => 'de France',
     'US' => 'des États-Unis',
@@ -38,6 +38,7 @@ echo "<div id='final-contract-container'>";
 echo "<h1>Contrat de Partenariat Commercial</h1>";
 echo "<br><p>Ce contrat est fait ce jour " . date("d/m/Y") . ", en " . htmlspecialchars($formData['data']['num_partners']) . " copies originales, entre :</p>";
 
+// Affichage des informations des partenaires
 foreach ($formData['partners'] as $index => $partner) {
     $partnerName = htmlspecialchars($partner['nom']);
     $contribution = htmlspecialchars($partner['contribution']);
