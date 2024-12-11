@@ -1,47 +1,24 @@
+// Sauvegarder la préférence de thème dans le stockage local
+function saveThemePreference(theme) {
+    localStorage.setItem('theme', theme);
+}
+
 function applyDarkTheme() {
     document.body.classList.add('dark-theme');
     document.body.classList.remove('light-theme');
 
-    // Fonction récursive pour appliquer le thème à tous les éléments et sous-éléments
-    function applyThemeRecursively(element) {
-        element.classList.add('dark-theme');
-        element.classList.remove('light-theme');
-
-        // Parcourir les enfants de l'élément actuel
-        const children = element.children;
-        for (let i = 0; i < children.length; i++) {
-            applyThemeRecursively(children[i]);
-        }
-    }
-
-    // Appliquer le thème à l'élément <body> et à tous ses enfants
-    applyThemeRecursively(document.body);
-
-    // Changer le texte du bouton
     document.getElementById('theme-switcher').textContent = 'Mode clair';
+
+    saveThemePreference('dark'); // Sauvegarder la préférence
 }
 
 function applyLightTheme() {
     document.body.classList.add('light-theme');
     document.body.classList.remove('dark-theme');
 
-    // Fonction récursive pour appliquer le thème à tous les éléments et sous-éléments
-    function applyThemeRecursively(element) {
-        element.classList.add('light-theme');
-        element.classList.remove('dark-theme');
-
-        // Parcourir les enfants de l'élément actuel
-        const children = element.children;
-        for (let i = 0; i < children.length; i++) {
-            applyThemeRecursively(children[i]);
-        }
-    }
-
-    // Appliquer le thème à l'élément <body> et à tous ses enfants
-    applyThemeRecursively(document.body);
-
-    // Changer le texte du bouton
     document.getElementById('theme-switcher').textContent = 'Mode sombre';
+
+    saveThemePreference('light'); // Sauvegarder la préférence
 }
 
 function switchTheme() {
@@ -53,21 +30,33 @@ function switchTheme() {
     }
 }
 
-if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    // Application du thème sombre si le navigateur l'est.
+// Vérifier et appliquer le thème sauvegardé ou celui du navigateur
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
     applyDarkTheme();
-} else {
+} else if (savedTheme === 'light') {
     applyLightTheme();
-}
-
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
-    const newColorScheme = event.matches ? "dark" : "light";
-    if (newColorScheme === "dark") {
+} else {
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
         applyDarkTheme();
     } else {
         applyLightTheme();
     }
+}
+
+// Mettre à jour le thème lors d'un changement dans les préférences du navigateur
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+    if (!localStorage.getItem('theme')) { // Ne pas écraser la préférence utilisateur
+        if (event.matches) {
+            applyDarkTheme();
+        } else {
+            applyLightTheme();
+        }
+    }
 });
 
-// Ajout de l'écouteur d'événements pour le bouton de changement de thème
+// Ajouter un écouteur d'événements pour le bouton de changement de thème
 document.getElementById('theme-switcher').addEventListener('click', switchTheme);
+
+console.log('Thème enregistré :', savedTheme);
+console.log('Thème du navigateur :', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');

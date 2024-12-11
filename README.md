@@ -28,11 +28,19 @@ Ce projet est une application web permettant de créer, modifier, afficher et su
 - **Scripts**: `create_form.js`
 - Permet d'ajouter, modifier et supprimer des partenaires dans le formulaire de création ou de modification de contrat.
 
-### 7. Thème Sombre/Clair
+### 7. Création de Compte
+- **Page**: `register.php`
+- Permet de créer un nouveau compte utilisateur en renseignant les informations nécessaires telles que le nom, le prénom, l'email et le mot de passe.
+
+### 8. Connexion
+- **Page**: `login.php`
+- Permet de se connecter à un compte utilisateur existant en renseignant l'email et le mot de passe.
+
+### 9. Thème Sombre/Clair
 - **Script**: `script.js`
 - Permet de basculer entre un thème sombre et un thème clair pour l'interface utilisateur.
 
-### 8. Autocomplétion
+### 10. Autocomplétion
 - **Pages**: `fetch_partner_names.php`, `fetch_contributions.php`
 - Fournit des fonctionnalités d'autocomplétion pour les noms des partenaires et leurs contributions en utilisant des requêtes AJAX.
 
@@ -45,28 +53,10 @@ Ce projet est une application web permettant de créer, modifier, afficher et su
 - `gen_pdf.php`: Page de génération de PDF pour un contrat.
 - `fetch_partner_names.php`: Script pour l'autocomplétion des noms des partenaires.
 - `fetch_contributions.php`: Script pour l'autocomplétion des contributions des partenaires.
+- `register.php`: Page de création de compte utilisateur.
+- `login.php`: Page de connexion utilisateur.
 - `scripts/`: Dossier contenant les fichiers JavaScript.
 - `html_utils/`: Dossier contenant les fichiers d'en-tête et de pied de page.
 - `functions.php`: Fichier contenant les fonctions utilitaires pour la gestion des contrats et des partenaires.
 
-## Installation
 
-1. Cloner le dépôt.
-2. Configurer la base de données dans le fichier `functions.php`.
-3. Importer le schéma de la base de données.
-4. Lancer le serveur web et accéder à l'application via le navigateur.
-
-## Utilisation
-
-1. Accéder à la page d'accueil pour voir la liste des contrats.
-2. Utiliser les boutons pour créer, modifier, afficher ou supprimer des contrats.
-3. Utiliser le bouton de changement de thème pour basculer entre le thème sombre et clair.
-4. Utiliser les fonctionnalités d'autocomplétion pour faciliter la saisie des noms des partenaires et des contributions.
-
-## Auteurs
-
-- Développeur: Noam Guez
-
-## Licence
-
-Ce projet est sous licence MIT.
