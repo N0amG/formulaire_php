@@ -2,6 +2,10 @@
 
 Ce projet est une application web permettant de créer, modifier, afficher et supprimer des contrats de partenariat commercial. Il inclut des fonctionnalités pour gérer les partenaires, les contributions et les termes du contrat.
 
+# Mise en Place
+
+Créer une bdd nommée "formulaire_db", puis cliquer sur cette bdd, cliquer sur importer, et importer le fichier formulaire_db.sql
+
 ## Fonctionnalités
 
 ### 1. Création de Contrat
