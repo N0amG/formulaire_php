@@ -72,6 +72,10 @@ input[type="submit"]:hover, button:hover {
   justify-content: flex-end;
 }
 
+#theme-switcher-container > .light-theme {
+  color: #333;
+}
+
 #theme-switcher-container > button {
   padding: 5px 10px;
   border: solid 1px #ccc;
@@ -81,7 +85,7 @@ input[type="submit"]:hover, button:hover {
 }
 
 #theme-switcher-container > button:hover {
-  background-color: #666;
+  background-color: #898989;
 }
 
 .delete-partner-container {

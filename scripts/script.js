@@ -4,8 +4,11 @@ function saveThemePreference(theme) {
 }
 
 function applyDarkTheme() {
-    document.body.classList.add('dark-theme');
-    document.body.classList.remove('light-theme');
+    const elements = document.querySelectorAll('*');
+    elements.forEach(el => {
+        el.classList.add('dark-theme');
+        el.classList.remove('light-theme');
+    });
 
     document.getElementById('theme-switcher').textContent = 'Mode clair';
 
@@ -13,8 +16,11 @@ function applyDarkTheme() {
 }
 
 function applyLightTheme() {
-    document.body.classList.add('light-theme');
-    document.body.classList.remove('dark-theme');
+    const elements = document.querySelectorAll('*');
+    elements.forEach(el => {
+        el.classList.add('light-theme');
+        el.classList.remove('dark-theme');
+    });
 
     document.getElementById('theme-switcher').textContent = 'Mode sombre';
 
@@ -58,5 +64,3 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
 // Ajouter un écouteur d'événements pour le bouton de changement de thème
 document.getElementById('theme-switcher').addEventListener('click', switchTheme);
 
-console.log('Thème enregistré :', savedTheme);
-console.log('Thème du navigateur :', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
